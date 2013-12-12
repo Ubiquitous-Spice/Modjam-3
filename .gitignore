@@ -1,6 +1,18 @@
-*.class
+# gradle
+.gradle
+build
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# ForgeGradle
+/run
+
+# eclipse
+.settings
+.metadata
+.classpath
+.project
+bin
+
+# intellij
+out
+*.idea
+*.iml
