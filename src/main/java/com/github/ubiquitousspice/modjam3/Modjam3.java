@@ -54,8 +54,8 @@ public class Modjam3
 		logger = event.getModLog();
 
 		{
-			ZombieBeacon beacon = new ZombieBeacon(5001);
-			GameRegistry.registerBlock(beacon,"modjam3-us:zombieBeacon");
+			ZombieBeacon beacon = new ZombieBeacon(501);
+			GameRegistry.registerBlock(beacon, "modjam3-us:zombieBeacon");
 		}
 	}
 
