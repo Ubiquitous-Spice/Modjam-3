@@ -13,13 +13,17 @@ buildscript {
 
 apply plugin: "forge"
 
-group = 'com.github.ubiquitiousspice.modjam3'
+ext.modid = "Modjam3"
+group = 'com.github.ubiquitiousspice.' + modid.toLowerCase()
 version = "0.1"
-archivesBaseName = 'Modjam3'
+archivesBaseName = modid
 
 minecraft {
 	version = "1.6.4-9.11.1.964"
 	assetDir = "run/assets"
+
+    replace "@MODID@", project.modid
+    replaceIn 'Constants.java'
 }
 
 processResources
@@ -27,13 +31,15 @@ processResources
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
         include 'version.properties'
+        include '**/**.lang'
 		
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version':project.version, 'mcversion':project.minecraft.version, 'modid': project.modid
     }
 	
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
         exclude 'version.properties'
+        exclude '**/**.lang'
     }
 }
 
