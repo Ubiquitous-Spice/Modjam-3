@@ -8,9 +8,9 @@ import net.minecraft.world.World;
 
 public class ZombieBeacon extends Block implements ITileEntityProvider
 {
-	public ZombieBeacon(int par1, Material par2Material)
+	public ZombieBeacon(int par1)
 	{
-		super(par1, par2Material);
+		super(par1, Material.rock);
 	}
 
 	@Override

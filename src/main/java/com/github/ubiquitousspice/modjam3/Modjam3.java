@@ -1,5 +1,6 @@
 package com.github.ubiquitousspice.modjam3;
 
+import com.github.ubiquitousspice.modjam3.blocks.ZombieBeacon;
 import com.github.ubiquitousspice.modjam3.network.PacketHandler;
 import com.github.ubiquitousspice.modjam3.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
@@ -8,6 +9,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.logging.Logger;
 
@@ -37,6 +39,10 @@ public class Modjam3
 
 	public static Logger logger;
 
+	//instances:
+
+	ZombieBeacon zombieBeacon;
+
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
@@ -46,6 +52,11 @@ public class Modjam3
 
 		// get Logger
 		logger = event.getModLog();
+
+		{
+			ZombieBeacon beacon = new ZombieBeacon(5001);
+			GameRegistry.registerBlock(beacon,"modjam3-us:zombieBeacon");
+		}
 	}
 
 	@Mod.EventHandler
