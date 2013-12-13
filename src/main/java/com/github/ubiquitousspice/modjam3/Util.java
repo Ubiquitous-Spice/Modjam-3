@@ -36,10 +36,12 @@ public class Util
 
 	public static void sendPacketToAllAround(Entity entity, double range, PacketBase packet)
 	{
-		PacketDispatcher.sendPacketToAllAround(entity.posX, entity.posY, entity.posZ, range, entity.dimension, packet.getPacket250());
+		PacketDispatcher.sendPacketToAllAround(entity.posX, entity.posY, entity.posZ, range, entity.dimension,
+											   packet.getPacket250());
 	}
 
-	public static void sendPacketToAllAround(double X, double Y, double Z, double range, int dimensionId, PacketBase packet)
+	public static void sendPacketToAllAround(double X, double Y, double Z, double range, int dimensionId,
+											 PacketBase packet)
 	{
 		PacketDispatcher.sendPacketToAllAround(X, Y, Z, range, dimensionId, packet.getPacket250());
 	}
