@@ -19,3 +19,10 @@ out
 *.iws
 *.ipr
 
+# minecraft
+saves
+mods
+stats
+config
+resourcepacks
+*.log*
