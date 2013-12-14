@@ -1,2 +1,0 @@
-selectWorld.gameMode.${modid.toLowerCase()}.line1=GameMode from the ${modid} mod
-selectWorld.gameMode.${modid.toLowerCase()}.line2=

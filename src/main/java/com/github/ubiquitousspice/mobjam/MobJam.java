@@ -1,6 +1,7 @@
 package com.github.ubiquitousspice.mobjam;
 
 import com.github.ubiquitousspice.mobjam.blocks.ZombieBeacon;
+import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import com.github.ubiquitousspice.mobjam.network.PacketHandler;
 import com.github.ubiquitousspice.mobjam.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
@@ -11,10 +12,14 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.entity.DataWatcher;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.EnumGameType;
 import net.minecraftforge.common.MinecraftForge;
 
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static com.github.ubiquitousspice.mobjam.Constants.MODID;
@@ -69,9 +74,47 @@ public class MobJam
 
 		proxy.registerRenderer();
 
-		MinecraftForge.EVENT_BUS.register(new EventHandler());
+		MinecraftForge.EVENT_BUS.register(new WorldGenHandler());
 
-		MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenHandler());
+		List<Map<?, ?>> maplist = new LinkedList();
+		for (Field field : EntityList.class.getDeclaredFields())
+		{
+			try
+			{
+				field.setAccessible(true);
+				maplist.add((Map) field.get(null));
+			}
+			catch (Throwable t)
+			{
+			}
+		}
+
+		Map<Map, Object> removemap = new HashMap();
+		for (Map map : maplist)
+		{
+			Set<Map.Entry> entryset = map.entrySet();
+			entryloop:
+			for (Map.Entry entry : entryset)
+			{
+				for (Object o1 : new Object[] {entry.getKey(), entry.getValue()})
+				{
+					for (Object o2 : new Object[] {EntitySwarmZombie.class, "Zombie", 54})
+					{
+						if (o1.equals(o2))
+						{
+							System.out.println("Removing from entity maps: " + o1 + " and " + o2);
+							removemap.put(map, o1);
+							continue entryloop;
+						}
+					}
+				}
+			}
+		}
+		for (Map.Entry<Map, Object> entry : removemap.entrySet())
+		{
+			entry.getKey().remove(entry.getValue());
+		}
+		EntityList.addMapping(EntitySwarmZombie.class, "Zombie", 54, 44975, 7969893);
 
 		// test recipe
 		GameRegistry.addShapelessRecipe(new ItemStack(zombieBeacon), Block.dirt);
