@@ -26,3 +26,4 @@ stats
 config
 resourcepacks
 *.log*
+/crash*
