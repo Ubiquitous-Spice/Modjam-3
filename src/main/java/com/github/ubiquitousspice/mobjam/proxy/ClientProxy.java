@@ -13,8 +13,7 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void registerRenderer()
 	{
-		ClientRegistry.bindTileEntitySpecialRenderer(ZombieBeacon.ZombieBeaconTE.class,
-													 new ZombieBeacon.ZombieBeaconTESR());
+		ClientRegistry.bindTileEntitySpecialRenderer(ZombieBeacon.ZombieBeaconTE.class, new ZombieBeacon.ZombieBeaconTESR());
 	}
 
 	@Override
