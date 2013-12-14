@@ -1,12 +1,11 @@
 package com.github.ubiquitousspice.mobjam.gamemodehack;
 
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiCreateWorld;
+import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.util.EnumSet;
@@ -20,12 +19,10 @@ public class GuiReplaceHandler implements ITickHandler
 	{
 		GuiScreen screen = Minecraft.getMinecraft().currentScreen;
 
-		if (screen != null && screen.getClass().equals(GuiCreateWorld.class))
+		if (screen != null && screen.getClass().equals(GuiMainMenu.class))
 		{
-			// insert our gui
-			GuiScreen parent = ObfuscationReflectionHelper.getPrivateValue(GuiCreateWorld.class, (GuiCreateWorld) screen, 0);
-			screen = new GuiMakeWorld(parent);
-			Minecraft.getMinecraft().displayGuiScreen(screen);
+			// insert our main menu that later uses our gui
+			Minecraft.getMinecraft().displayGuiScreen(new HackedMainMenu());
 		}
 	}
 

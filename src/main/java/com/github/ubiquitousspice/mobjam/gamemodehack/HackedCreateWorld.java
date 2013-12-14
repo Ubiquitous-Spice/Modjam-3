@@ -22,7 +22,7 @@ import org.lwjgl.input.Keyboard;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
-public class GuiMakeWorld extends GuiCreateWorld
+public class HackedCreateWorld extends GuiCreateWorld
 {
 	private GuiScreen parentGuiScreen;
 	private GuiTextField textboxWorldName;
@@ -113,7 +113,7 @@ public class GuiMakeWorld extends GuiCreateWorld
 						  "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8",
 						  "LPT9"};
 
-	public GuiMakeWorld(GuiScreen parent)
+	public HackedCreateWorld(GuiScreen parent)
 	{
 		super(parent);
 		this.parentGuiScreen = parent;
