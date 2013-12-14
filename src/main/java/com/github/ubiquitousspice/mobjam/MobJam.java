@@ -56,8 +56,8 @@ public class MobJam
 		logger = event.getModLog();
 
 		{
-			ZombieBeacon beacon = new ZombieBeacon(501);
-			GameRegistry.registerBlock(beacon, "mobjam:zombieBeacon");
+			zombieBeacon = new ZombieBeacon(501);
+			GameRegistry.registerBlock(zombieBeacon, "mobjam:zombieBeacon");
 		}
 	}
 
@@ -71,7 +71,7 @@ public class MobJam
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 
 		// test recipe
-		GameRegistry.addRecipe(new ItemStack(zombieBeacon), "X", Block.dirt);
+		GameRegistry.addShapelessRecipe(new ItemStack(zombieBeacon), Block.dirt);
 	}
 
 }
