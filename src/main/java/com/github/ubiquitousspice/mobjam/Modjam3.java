@@ -1,8 +1,8 @@
-package com.github.ubiquitousspice.modjam3;
+package com.github.ubiquitousspice.mobjam;
 
-import com.github.ubiquitousspice.modjam3.blocks.ZombieBeacon;
-import com.github.ubiquitousspice.modjam3.network.PacketHandler;
-import com.github.ubiquitousspice.modjam3.proxy.CommonProxy;
+import com.github.ubiquitousspice.mobjam.blocks.ZombieBeacon;
+import com.github.ubiquitousspice.mobjam.network.PacketHandler;
+import com.github.ubiquitousspice.mobjam.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
@@ -13,8 +13,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.logging.Logger;
 
-import static com.github.ubiquitousspice.modjam3.Constants.MODID;
-import static com.github.ubiquitousspice.modjam3.Constants.VERSION;
+import static com.github.ubiquitousspice.mobjam.Constants.MODID;
+import static com.github.ubiquitousspice.mobjam.Constants.VERSION;
 
 @NetworkMod(
 		clientSideRequired = true,
@@ -33,8 +33,8 @@ public class Modjam3
 
 	@SidedProxy(
 			modId = MODID,
-			clientSide = "com.github.ubiquitousspice.modjam3.proxy.ClientProxy",
-			serverSide = "com.github.ubiquitousspice.modjam3.proxy.CommonProxy")
+			clientSide = "com.github.ubiquitousspice.mobjam.proxy.ClientProxy",
+			serverSide = "com.github.ubiquitousspice.mobjam.proxy.CommonProxy")
 	public static CommonProxy proxy;
 
 	public static Logger logger;
@@ -55,7 +55,7 @@ public class Modjam3
 
 		{
 			ZombieBeacon beacon = new ZombieBeacon(501);
-			GameRegistry.registerBlock(beacon, "modjam3-us:zombieBeacon");
+			GameRegistry.registerBlock(beacon, "mobjam:zombieBeacon");
 		}
 	}
 

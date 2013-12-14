@@ -1,4 +1,4 @@
-package com.github.ubiquitousspice.modjam3;
+package com.github.ubiquitousspice.mobjam;
 
 import com.google.common.base.Throwables;
 

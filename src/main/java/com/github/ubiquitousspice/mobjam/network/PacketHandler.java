@@ -1,7 +1,7 @@
-package com.github.ubiquitousspice.modjam3.network;
+package com.github.ubiquitousspice.mobjam.network;
 
-import com.github.ubiquitousspice.modjam3.Constants;
-import com.github.ubiquitousspice.modjam3.Modjam3;
+import com.github.ubiquitousspice.mobjam.Constants;
+import com.github.ubiquitousspice.mobjam.Modjam3;
 import com.google.common.base.Throwables;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;

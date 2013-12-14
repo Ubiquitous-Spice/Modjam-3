@@ -1,6 +1,6 @@
-package com.github.ubiquitousspice.modjam3;
+package com.github.ubiquitousspice.mobjam;
 
-import com.github.ubiquitousspice.modjam3.network.PacketBase;
+import com.github.ubiquitousspice.mobjam.network.PacketBase;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.Entity;
