@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.world.EnumGameType;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.logging.Logger;
@@ -21,10 +22,8 @@ import static com.github.ubiquitousspice.mobjam.Constants.VERSION;
 		clientSideRequired = true,
 		serverSideRequired = true,
 		channels = {MODID},
-		clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {MODID},
-																 packetHandler = PacketHandler.HandlerClient.class),
-		serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {MODID},
-																 packetHandler = PacketHandler.HandlerServer.class)
+		clientPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {MODID}, packetHandler = PacketHandler.HandlerClient.class),
+		serverPacketHandlerSpec = @NetworkMod.SidedPacketHandler(channels = {MODID}, packetHandler = PacketHandler.HandlerServer.class)
 )
 @Mod(modid = MODID, version = MODID)
 public class MobJam
@@ -40,9 +39,9 @@ public class MobJam
 
 	public static Logger logger;
 
-	//instances:
+	public static EnumGameType GAMEMODE;
 
-	ZombieBeacon zombieBeacon;
+	public static ZombieBeacon zombieBeacon;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -63,6 +62,10 @@ public class MobJam
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		proxy.hackGameMode();
+
+		proxy.registerRenderer();
+
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
