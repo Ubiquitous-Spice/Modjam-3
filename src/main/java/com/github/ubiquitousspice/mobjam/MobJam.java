@@ -71,6 +71,8 @@ public class MobJam
 
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
 
+		MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenHandler());
+
 		// test recipe
 		GameRegistry.addShapelessRecipe(new ItemStack(zombieBeacon), Block.dirt);
 	}

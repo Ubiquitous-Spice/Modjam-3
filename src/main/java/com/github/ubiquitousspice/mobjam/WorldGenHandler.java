@@ -14,7 +14,6 @@ public class WorldGenHandler
 		ChunkCoordinates spawn = event.world.getSpawnPoint();
 		if (spawn.posX / 16 == event.chunkX && spawn.posZ / 16 == event.chunkZ)
 		{
-			System.out.println("GENNING");
 			final World world = event.world;
 			final int cx = event.chunkX * 16 + 8;
 			final int cz = event.chunkZ * 16 + 8;
