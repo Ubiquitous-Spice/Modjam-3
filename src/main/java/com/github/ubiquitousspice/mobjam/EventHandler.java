@@ -19,7 +19,6 @@ public class EventHandler
 			swarmZombie.posX = entity.posX;
 			swarmZombie.posY = entity.posY;
 			swarmZombie.posZ = entity.posZ;
-			System.out.println("Our Zombie Spawned");
 			event.setResult(Event.Result.DENY);
 		}
 	}
