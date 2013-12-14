@@ -58,6 +58,7 @@ public class MobJam
 		{
 			zombieBeacon = new ZombieBeacon(501);
 			GameRegistry.registerBlock(zombieBeacon, "mobjam:zombieBeacon");
+			GameRegistry.registerTileEntity(ZombieBeacon.ZombieBeaconTE.class, "ZombieBeacon");
 		}
 	}
 
