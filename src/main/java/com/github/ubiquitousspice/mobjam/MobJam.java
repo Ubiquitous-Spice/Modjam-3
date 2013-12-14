@@ -10,6 +10,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.EnumGameType;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -67,6 +69,9 @@ public class MobJam
 		proxy.registerRenderer();
 
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
+
+		// test recipe
+		GameRegistry.addRecipe(new ItemStack(zombieBeacon), "X", Block.dirt);
 	}
 
 }

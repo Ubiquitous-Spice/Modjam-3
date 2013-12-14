@@ -133,6 +133,7 @@ public class GuiMakeWorld extends GuiCreateWorld
 	/**
 	 * Adds the buttons (and other controls) to the screen in question.
 	 */
+	@SuppressWarnings({"unchecked"})
 	public void initGui()
 	{
 		Keyboard.enableRepeatEvents(true);
