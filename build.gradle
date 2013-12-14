@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: "forge"
 
-ext.modid = "Modjam3"
+ext.modid = "MobJam"
 group = 'com.github.ubiquitiousspice.' + modid.toLowerCase()
 version = "0.1"
 archivesBaseName = modid

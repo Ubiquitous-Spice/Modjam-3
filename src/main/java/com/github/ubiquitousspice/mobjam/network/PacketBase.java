@@ -1,7 +1,7 @@
 package com.github.ubiquitousspice.mobjam.network;
 
 import com.github.ubiquitousspice.mobjam.Constants;
-import com.github.ubiquitousspice.mobjam.Modjam3;
+import com.github.ubiquitousspice.mobjam.MobJam;
 import com.google.common.base.Throwables;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -42,9 +42,9 @@ public abstract class PacketBase
 		}
 		catch (Exception e)
 		{
-			Modjam3.logger
-				   .log(Level.SEVERE, "Error building " + Constants.MODID + " packet! " + getClass().getSimpleName(),
-						e);
+			MobJam.logger
+				  .log(Level.SEVERE, "Error building " + Constants.MODID + " packet! " + getClass().getSimpleName(),
+					   e);
 			Throwables.propagate(e);
 		}
 

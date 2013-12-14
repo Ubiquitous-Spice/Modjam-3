@@ -1,7 +1,7 @@
 package com.github.ubiquitousspice.mobjam.network;
 
 import com.github.ubiquitousspice.mobjam.Constants;
-import com.github.ubiquitousspice.mobjam.Modjam3;
+import com.github.ubiquitousspice.mobjam.MobJam;
 import com.google.common.base.Throwables;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
@@ -53,7 +53,7 @@ public abstract class PacketHandler implements IPacketHandler
 		}
 		catch (Exception e)
 		{
-			Modjam3.logger.log(Level.SEVERE, "Error reading " + Constants.MODID + " packet!", e);
+			MobJam.logger.log(Level.SEVERE, "Error reading " + Constants.MODID + " packet!", e);
 			Throwables.propagate(e);
 		}
 	}
