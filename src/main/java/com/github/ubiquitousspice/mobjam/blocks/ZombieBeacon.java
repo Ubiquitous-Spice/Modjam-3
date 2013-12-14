@@ -1,5 +1,6 @@
 package com.github.ubiquitousspice.mobjam.blocks;
 
+import com.github.ubiquitousspice.mobjam.MobJam;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,16 +28,67 @@ public class ZombieBeacon extends BlockBeacon
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8,
 									float par9)
 	{
-		getHighestBlock(par1World, par2, par4);
+		genFort(par1World, par2, getHighestBlock(par1World, par2, par4), par4);
 		return true;
 	}
 
-	protected void getHighestBlock(final World world, final int cx, final int cz)
+	private static final int RADIUS = 3;
+
+	private static final int HEIGHT = 3;
+
+	private static void genFort(World world, int cx, int highestBlock, int cz)
+	{
+		//gen floor
+		for (int x = cx - RADIUS; x <= cx + RADIUS; x++)
+		{
+			for (int z = cz - RADIUS; z <= cz + RADIUS; z++)
+			{
+				world.setBlock(x, highestBlock, z, Block.stoneBrick.blockID);
+			}
+		}
+		//gen walls
+		{
+			//x walls
+			for (int i : new int[] {1, -1})
+			{
+				for (int z = cz - RADIUS; z <= cz + RADIUS; z++)
+				{
+					for (int y = highestBlock; y <= highestBlock + HEIGHT + 1; y++)
+					{
+						world.setBlock(cx + (RADIUS * i), y, z, Block.stoneBrick.blockID);
+					}
+				}
+			}
+			//z walls
+			for (int i : new int[] {1, -1})
+			{
+				for (int x = cx - RADIUS; x <= cx + RADIUS; x++)
+				{
+					for (int y = highestBlock; y <= highestBlock + HEIGHT + 1; y++)
+					{
+						world.setBlock(x, y, cz + (RADIUS * i), Block.stoneBrick.blockID);
+					}
+				}
+			}
+		}
+		//holes in walls
+		for (int i : new int[] {1, -1})
+		{
+			world.setBlock(cx, highestBlock + 1, cz + (RADIUS * i), 0);
+			world.setBlock(cx, highestBlock + 2, cz + (RADIUS * i), 0);
+			world.setBlock(cx + (RADIUS * i), highestBlock + 1, cz, 0);
+			world.setBlock(cx + (RADIUS * i), highestBlock + 2, cz, 0);
+		}
+		//beacon
+		world.setBlock(cx,highestBlock+1,cz, MobJam.zombieBeacon.blockID);
+	}
+
+	protected static int getHighestBlock(final World world, final int cx, final int cz)
 	{
 		int highest = -1;
-		for (int x = cx - 3; x <= cx + 3; x++)
+		for (int x = cx - RADIUS; x <= cx + RADIUS; x++)
 		{
-			for (int z = cz - 3; z <= cz + 3; z++)
+			for (int z = cz - RADIUS; z <= cz + RADIUS; z++)
 			{
 				int y = 255;
 				while (world.getBlockId(x, y, z) == 0 && y > highest)
@@ -49,6 +101,7 @@ public class ZombieBeacon extends BlockBeacon
 				}
 			}
 		}
+		return highest;
 	}
 
 	@Override
