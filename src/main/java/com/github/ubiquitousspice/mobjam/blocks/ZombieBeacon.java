@@ -3,6 +3,7 @@ package com.github.ubiquitousspice.mobjam.blocks;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockBeacon;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -23,16 +24,37 @@ public class ZombieBeacon extends BlockBeacon
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		return new ZombieBeaconTE();
-	}
-
-	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8,
 									float par9)
 	{
-		return false;
+		getHighestBlock(par1World, par2, par4);
+		return true;
+	}
+
+	protected void getHighestBlock(final World world, final int cx, final int cz)
+	{
+		int highest = -1;
+		for (int x = cx - 3; x <= cx + 3; x++)
+		{
+			for (int z = cz - 3; z <= cz + 3; z++)
+			{
+				int y = 255;
+				while (world.getBlockId(x, y, z) == 0 && y > highest)
+				{
+					y--;
+				}
+				if ((world.getBlockId(x, y, z) != 0))
+				{
+					highest = y;
+				}
+			}
+		}
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world)
+	{
+		return new ZombieBeaconTE();
 	}
 
 	public static class ZombieBeaconTE extends TileEntityBeacon
