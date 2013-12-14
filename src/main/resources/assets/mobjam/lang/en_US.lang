@@ -3,6 +3,6 @@ selectWorld.gameMode.${modid.toLowerCase()}.line1=GameMode from the ${modid} mod
 selectWorld.gameMode.${modid.toLowerCase()}.line2=
 
 # for the dev workspace..... ONLY
-selectWorld.gameMode.@modid@=@modid@
-selectWorld.gameMode.@modid@.line1=GameMode from the @modid@ mod
-selectWorld.gameMode.@modid@.line2=
+selectWorld.gameMode.mobjam=MobJam
+selectWorld.gameMode.mobjam.line1=GameMode from the MobJam mod
+selectWorld.gameMode.mobjam.line2=

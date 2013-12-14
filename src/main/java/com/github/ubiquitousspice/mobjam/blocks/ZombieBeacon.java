@@ -1,17 +1,24 @@
 package com.github.ubiquitousspice.mobjam.blocks;
 
+import com.github.ubiquitousspice.mobjam.Constants;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class ZombieBeacon extends BlockContainer
 {
@@ -20,6 +27,54 @@ public class ZombieBeacon extends BlockContainer
 		super(par1, Material.iron);
 		this.setCreativeTab(null);
 		this.setLightValue(15f);
+	}
+
+	@Override
+	public int getRenderType()
+	{
+		return -1;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock()
+	{
+		return false;
+	}
+
+	@Override
+	public float getEnchantPowerBonus(World world, int x, int y, int z)
+	{
+		return 100f;
+	}
+
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		return null;
+	}
+
+	@Override
+	public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
+	{
+		return side == ForgeDirection.DOWN;
+	}
+
+	@Override
+	public boolean isBlockNormalCube(World world, int x, int y, int z)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
 	}
 
 	@Override
@@ -83,16 +138,38 @@ public class ZombieBeacon extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public static class ZombieBeaconTESR extends TileEntitySpecialRenderer
 	{
-		private static final ResourceLocation texture = new ResourceLocation("textures/entity/beacon_beam.png");
+		private static final ResourceLocation beamTexture = new ResourceLocation("textures/entity/beacon_beam.png");
+		private static final ResourceLocation texture = new ResourceLocation(Constants.MODID.toLowerCase(), "textures/beacon.png");
+		//private static final ResourceLocation texture = new ResourceLocation("textures/entity/chest/christmas.png");
+		ZombieBeaconModel model = new ZombieBeaconModel();
 
-		private void render(ZombieBeaconTE entity, double x, double y, double z, float thing)
+		private void renderBlock(ZombieBeaconTE entity, double x, double y, double z, float thing)
+		{
+			GL11.glPushMatrix();
+			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
+			GL11.glScalef(1.0F, -1.0F, -1.0F);
+			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GL11.glRotatef(0f, 0.0F, 1.0F, 0.0F);
+			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+
+			this.bindTexture(texture);
+			model.renderAll();
+
+			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+			GL11.glPopMatrix();
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		}
+
+		private void renderBeam(ZombieBeaconTE entity, double x, double y, double z, float thing)
 		{
 			float intensity = entity.getBeamIntensity();
 
 			// stolen from the Beacon code
 
 			Tessellator tessellator = Tessellator.instance;
-			this.bindTexture(texture);
+			this.bindTexture(beamTexture);
 			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F);
 			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F);
 			GL11.glDisable(GL11.GL_LIGHTING);
@@ -186,7 +263,40 @@ public class ZombieBeacon extends BlockContainer
 		@Override
 		public void renderTileEntityAt(TileEntity tileentity, double d0, double d1, double d2, float f)
 		{
-			render((ZombieBeaconTE) tileentity, d0, d1, d2, f);
+			renderBlock((ZombieBeaconTE) tileentity, d0, d1, d2, f);
+			renderBeam((ZombieBeaconTE) tileentity, d0, d1, d2, f);
+		}
+	}
+
+	private static class ZombieBeaconModel extends ModelBase
+	{
+		public ModelRenderer base;
+
+
+		public ZombieBeaconModel()
+		{
+//			this.chestLid.addBox(0.0F, -5.0F, -14.0F, 14, 5, 14, 0.0F);
+//			this.chestLid.rotationPointX = 1.0F;
+//			this.chestLid.rotationPointY = 7.0F;
+//			this.chestLid.rotationPointZ = 15.0F;
+//			this.chestKnob = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 64);
+//			this.chestKnob.addBox(-1.0F, -2.0F, -15.0F, 2, 4, 1, 0.0F);
+//			this.chestKnob.rotationPointX = 8.0F;
+//			this.chestKnob.rotationPointY = 7.0F;
+//			this.chestKnob.rotationPointZ = 15.0F;
+			this.base = (new ModelRenderer(this, 0, 19)).setTextureSize(64, 64);
+			this.base.addBox(0.0F, 0.0F, 0.0F, 14, 5, 14, 0.0F);
+			this.base.rotationPointX = 1.0F;
+			this.base.rotationPointY = 11.0F;
+			this.base.rotationPointZ = 1.0F;
+		}
+
+		/**
+		 * This method renders out all parts of the chest model.
+		 */
+		public void renderAll()
+		{
+			base.render(0.0625F);
 		}
 	}
 }
