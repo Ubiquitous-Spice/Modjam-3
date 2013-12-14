@@ -106,11 +106,6 @@ public class GuiMakeWorld extends GuiCreateWorld
 	private int worldTypeId;
 
 	/**
-	 * Generator options to use when creating the world.
-	 */
-	public String generatorOptionsToUse = "";
-
-	/**
 	 * If the world name is one of these, it'll be surrounded with underscores.
 	 */
 	private static final String[] ILLEGAL_WORLD_NAMES =
