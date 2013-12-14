@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.util.logging.Logger;
 
@@ -62,7 +63,7 @@ public class MobJam
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 
 }
