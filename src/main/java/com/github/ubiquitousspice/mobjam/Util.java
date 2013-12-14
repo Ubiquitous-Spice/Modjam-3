@@ -1,10 +1,12 @@
 package com.github.ubiquitousspice.mobjam;
 
 import com.github.ubiquitousspice.mobjam.network.PacketBase;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
 public class Util
@@ -36,13 +38,21 @@ public class Util
 
 	public static void sendPacketToAllAround(Entity entity, double range, PacketBase packet)
 	{
-		PacketDispatcher.sendPacketToAllAround(entity.posX, entity.posY, entity.posZ, range, entity.dimension,
-											   packet.getPacket250());
+		PacketDispatcher.sendPacketToAllAround(entity.posX, entity.posY, entity.posZ, range, entity.dimension, packet.getPacket250());
 	}
 
-	public static void sendPacketToAllAround(double X, double Y, double Z, double range, int dimensionId,
-											 PacketBase packet)
+	public static void sendPacketToAllAround(double X, double Y, double Z, double range, int dimensionId, PacketBase packet)
 	{
 		PacketDispatcher.sendPacketToAllAround(X, Y, Z, range, dimensionId, packet.getPacket250());
+	}
+
+	public static boolean isOurGameMode()
+	{
+		return FMLCommonHandler.instance().getSidedDelegate().getServer().getGameType() == MobJam.GAMEMODE;
+	}
+
+	public static boolean isOurGameMode(EntityPlayerMP player)
+	{
+		return player.theItemInWorldManager.getGameType() == MobJam.GAMEMODE;
 	}
 }

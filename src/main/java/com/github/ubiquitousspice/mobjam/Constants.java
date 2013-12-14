@@ -8,6 +8,7 @@ import java.util.Properties;
 public class Constants
 {
 	public static final String MODID = "@MODID@";
+	public static final String GAMEMODE = MODID.toLowerCase();
 
 	static
 	{
