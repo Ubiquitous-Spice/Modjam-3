@@ -3,13 +3,13 @@ package com.github.ubiquitousspice.mobjam.proxy;
 import com.github.ubiquitousspice.mobjam.blocks.ZombieBeacon;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import com.github.ubiquitousspice.mobjam.entities.SwarmZombieRenderer;
-import com.github.ubiquitousspice.mobjam.gamemodehack.GuiReplaceHandler;
+import com.github.ubiquitousspice.mobjam.gamemodehack.HackyEventHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.entity.RenderZombie;
+import net.minecraftforge.common.MinecraftForge;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy
@@ -27,6 +27,8 @@ public class ClientProxy extends CommonProxy
 		super.hackGameMode();
 
 		// hack in the gui.
-		TickRegistry.registerTickHandler(new GuiReplaceHandler(), Side.CLIENT);
+		HackyEventHandler handler = new HackyEventHandler();
+		NetworkRegistry.instance().registerConnectionHandler(handler);
+		MinecraftForge.EVENT_BUS.register(handler);
 	}
 }

@@ -346,7 +346,7 @@ public class HackedCreateWorld extends GuiCreateWorld
 						this.commandsAllowed = false;
 					}
 
-					this.isHardcore = false;
+					this.isHardcore = true;
 					this.gameMode = Constants.GAMEMODE;
 					this.buttonAllowCommands.enabled = false;
 					this.buttonBonusItems.enabled = false;
