@@ -1,6 +1,7 @@
 package com.github.ubiquitousspice.mobjam;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -28,12 +29,14 @@ public class WorldGenHandler
 
 	private static void genFort(World world, int cx, int highestBlock, int cz)
 	{
+		int blockid = Block.stoneBrick.blockID;
+
 		//gen floor
 		for (int x = cx - RADIUS; x <= cx + RADIUS; x++)
 		{
 			for (int z = cz - RADIUS; z <= cz + RADIUS; z++)
 			{
-				world.setBlock(x, highestBlock, z, Block.stoneBrick.blockID);
+				world.setBlock(x, highestBlock, z, blockid);
 			}
 		}
 		//gen walls
@@ -45,7 +48,7 @@ public class WorldGenHandler
 				{
 					for (int y = highestBlock; y <= highestBlock + HEIGHT + 1; y++)
 					{
-						world.setBlock(cx + (RADIUS * i), y, z, Block.stoneBrick.blockID);
+						world.setBlock(cx + (RADIUS * i), y, z, blockid);
 					}
 				}
 			}
@@ -56,7 +59,7 @@ public class WorldGenHandler
 				{
 					for (int y = highestBlock; y <= highestBlock + HEIGHT + 1; y++)
 					{
-						world.setBlock(x, y, cz + (RADIUS * i), Block.stoneBrick.blockID);
+						world.setBlock(x, y, cz + (RADIUS * i), blockid);
 					}
 				}
 			}
@@ -69,8 +72,22 @@ public class WorldGenHandler
 			world.setBlock(cx + (RADIUS * i), highestBlock + 1, cz, 0);
 			world.setBlock(cx + (RADIUS * i), highestBlock + 2, cz, 0);
 		}
+
+		// clear insides
+		for (int x = cx - RADIUS - 1; x <= cx + RADIUS - 1; x++)
+		{
+			for (int z = cz - RADIUS - 1; z <= cz + RADIUS - 1; z++)
+			{
+				for (int y = highestBlock + 1; y <= highestBlock + 1 + HEIGHT; y++)
+				{
+					world.setBlock(x, y, z, 0);
+				}
+			}
+		}
+
 		//beacon
-		world.setBlock(cx, highestBlock + 1, cz, MobJam.zombieBeacon.blockID);
+		world.setBlock(cx, highestBlock + 2, cz, MobJam.zombieBeacon.blockID);
+		world.setBlock(cx, highestBlock + 1, cz, blockid);
 	}
 
 	protected static int getHighestBlock(final World world, final int cx, final int cz)
@@ -81,7 +98,7 @@ public class WorldGenHandler
 			for (int z = cz - RADIUS; z <= cz + RADIUS; z++)
 			{
 				int y = 255;
-				while (world.getBlockId(x, y, z) == 0 && y > highest)
+				while (isBlockAllowed(world, x, y, z) && y > highest)
 				{
 					y--;
 				}
@@ -92,5 +109,26 @@ public class WorldGenHandler
 			}
 		}
 		return highest;
+	}
+
+	/**
+	 * Returns true if the block is not considered a valid block to gen on. It isnt the ground.
+	 */
+	protected static boolean isBlockAllowed(World world, int x, int y, int z)
+	{
+		int id = world.getBlockId(x, y, z);
+		if (id == 0)
+		{
+			return true;
+		}
+
+		Block block = BlockSand.blocksList[id];
+
+		if (block.isLeaves(world, x, y, z) || block.isWood(world, x, y, z))
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

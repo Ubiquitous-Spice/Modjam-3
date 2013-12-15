@@ -27,7 +27,13 @@ public class ZombieBeacon extends BlockContainer
 		super(par1, Material.iron);
 		this.setCreativeTab(null);
 		this.setLightValue(15f);
+		this.setBlockUnbreakable();
+		this.setResistance(6000000.0F);
+
+		float f = .0652f;
+		this.setBlockBounds(f, 0, f, 1 - f, .5f, 1 - f);
 	}
+
 
 	@Override
 	public int getRenderType()
