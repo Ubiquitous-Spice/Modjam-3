@@ -1,14 +1,38 @@
 package com.github.ubiquitousspice.mobjam;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
+import org.lwjgl.opengl.GL11;
 
-public class WorldGenHandler
+public class EventHandler
 {
+
+	RenderItem renderItem = new RenderItem();
+	ItemStack compassStack = new ItemStack(Item.compass);
+
+	@ForgeSubscribe
+	public void renderOverlay(RenderGameOverlayEvent event)
+	{
+		if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
+		{
+			GL11.glPushMatrix();
+			GL11.glTranslatef(0.0F, 0.0F, 32.0F);
+			renderItem.zLevel = 200.0F;
+			renderItem.renderItemIntoGUI(null, Minecraft.getMinecraft().getTextureManager(), compassStack, 0, 0);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glPopMatrix();
+		}
+	}
+
 	@ForgeSubscribe
 	public void genSpawn(PopulateChunkEvent.Post event)
 	{

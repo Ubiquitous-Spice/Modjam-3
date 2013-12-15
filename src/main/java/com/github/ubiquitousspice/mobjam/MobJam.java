@@ -12,7 +12,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.EnumGameType;
@@ -74,7 +73,7 @@ public class MobJam
 
 		proxy.registerRenderer();
 
-		MinecraftForge.EVENT_BUS.register(new WorldGenHandler());
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 
 		List<Map<?, ?>> maplist = new LinkedList();
 		for (Field field : EntityList.class.getDeclaredFields())
