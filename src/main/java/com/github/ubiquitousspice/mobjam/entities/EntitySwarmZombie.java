@@ -19,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDummyContainer;
@@ -43,8 +42,12 @@ public class EntitySwarmZombie extends EntityMob
 
 	public EntitySwarmZombie(World par1World)
 	{
+		this(par1World, true);
+	}
+
+	public EntitySwarmZombie(World par1World, boolean genClones)
+	{
 		super(par1World);
-		System.out.println("OUR ZOMBIE");
 		navigator = new SwarmPathNavigate(this, par1World);
 		this.getNavigator().setBreakDoors(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
@@ -59,6 +62,19 @@ public class EntitySwarmZombie extends EntityMob
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
+		if (genClones)// TODO: FIX
+		{
+			int day = (int) par1World.getTotalWorldTime() / 24000;
+			int tospawn = 20;//(int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
+
+			while (tospawn > 0)
+			{
+				Entity ent = new EntitySwarmZombie(par1World, false);
+				ent.setPosition(this.posX, this.posY, this.posZ);
+				par1World.joinEntityInSurroundings(ent);
+				tospawn--;
+			}
+		}
 	}
 
 	protected void applyEntityAttributes()
@@ -169,7 +185,7 @@ public class EntitySwarmZombie extends EntityMob
 						if (itemstack.getItemDamageForDisplay() >= itemstack.getMaxDamage())
 						{
 							this.renderBrokenItemStack(itemstack);
-							this.setCurrentItemOrArmor(4, (ItemStack) null);
+							this.setCurrentItemOrArmor(4, null);
 						}
 					}
 
@@ -362,7 +378,7 @@ public class EntitySwarmZombie extends EntityMob
 			EntityZombie entityzombie = new EntityZombie(this.worldObj);
 			entityzombie.copyLocationAndAnglesFrom(par1EntityLivingBase);
 			this.worldObj.removeEntity(par1EntityLivingBase);
-			entityzombie.onSpawnWithEgg((EntityLivingData) null);
+			entityzombie.onSpawnWithEgg(null);
 			entityzombie.setVillager(true);
 
 			if (par1EntityLivingBase.isChild())
@@ -371,7 +387,7 @@ public class EntitySwarmZombie extends EntityMob
 			}
 
 			this.worldObj.spawnEntityInWorld(entityzombie);
-			this.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1016, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
+			this.worldObj.playAuxSFXAtEntity(null, 1016, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
 		}
 	}
 
