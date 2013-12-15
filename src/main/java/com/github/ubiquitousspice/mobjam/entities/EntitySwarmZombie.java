@@ -45,10 +45,10 @@ public class EntitySwarmZombie extends EntityMob
 		this(par1World, true);
 	}
 
-	public EntitySwarmZombie(World par1World, boolean genClones)
+	public EntitySwarmZombie(World world, boolean genClones)
 	{
-		super(par1World);
-		navigator = new SwarmPathNavigate(this, par1World);
+		super(world);
+		navigator = new SwarmPathNavigate(this, world);
 		this.getNavigator().setBreakDoors(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(1, new EntityAIBreakDoor(this));
@@ -58,16 +58,17 @@ public class EntitySwarmZombie extends EntityMob
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
-		if (genClones)// TODO: FIX
+
+		if (genClones && world != null)
 		{
-			int day = (int) par1World.getTotalWorldTime() / 24000;
+			int day = (int) world.getTotalWorldTime() / 24000;
 			int tospawn = 20;//(int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
 
 			while (tospawn > 0)
 			{
-				Entity ent = new EntitySwarmZombie(par1World, false);
+				Entity ent = new EntitySwarmZombie(world, false);
 				ent.setPosition(this.posX, this.posY, this.posZ);
-				par1World.joinEntityInSurroundings(ent);
+				world.joinEntityInSurroundings(ent);
 				tospawn--;
 			}
 		}
@@ -440,7 +441,7 @@ public class EntitySwarmZombie extends EntityMob
 
 			if (itemstack.stackSize <= 0)
 			{
-				par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, (ItemStack) null);
+				par1EntityPlayer.inventory.setInventorySlotContents(par1EntityPlayer.inventory.currentItem, null);
 			}
 
 			if (!this.worldObj.isRemote)
@@ -506,7 +507,7 @@ public class EntitySwarmZombie extends EntityMob
 	{
 		EntityVillager entityvillager = new EntityVillager(this.worldObj);
 		entityvillager.copyLocationAndAnglesFrom(this);
-		entityvillager.onSpawnWithEgg((EntityLivingData) null);
+		entityvillager.onSpawnWithEgg(null);
 		entityvillager.func_82187_q();
 
 		if (this.isChild())
@@ -517,7 +518,7 @@ public class EntitySwarmZombie extends EntityMob
 		this.worldObj.removeEntity(this);
 		this.worldObj.spawnEntityInWorld(entityvillager);
 		entityvillager.addPotionEffect(new PotionEffect(Potion.confusion.id, 200, 0));
-		this.worldObj.playAuxSFXAtEntity((EntityPlayer) null, 1017, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
+		this.worldObj.playAuxSFXAtEntity(null, 1017, (int) this.posX, (int) this.posY, (int) this.posZ, 0);
 	}
 
 	/**
