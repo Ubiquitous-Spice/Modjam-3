@@ -142,29 +142,101 @@ public class ZombieBeacon extends BlockContainer
 		private static final ResourceLocation texture = new ResourceLocation(Constants.MODID.toLowerCase(), "textures/beacon.png");
 		//private static final ResourceLocation texture = new ResourceLocation("textures/entity/chest/christmas.png");
 		ZombieBeaconModel model = new ZombieBeaconModel();
+		float[] colors = new float[] {0f, 0f, 0f};
+		int multiplier = 1;
+		float min = 0;
 
-		private void renderBlock(ZombieBeaconTE entity, double x, double y, double z, float thing)
+		private void updateColors(ZombieBeaconTE entity, float partial)
+		{
+			if (entity.getWorldObj().getTotalWorldTime() % 24000 >= 12000)
+			{
+				min = .5f;
+			}
+			else
+			{
+				min = 0;
+			}
+
+			float timeChange = (float) entity.getWorldObj().getTotalWorldTime() + partial;
+
+			// colors
+			if (isAllTop())
+			{
+				multiplier = -1;
+			}
+			else if (isAllBottom())
+			{
+				multiplier = 1;
+			}
+
+			for (int i = 0; i < colors.length; i++)
+			{
+				if (multiplier == 1 && colors[i] >= 1f)
+				{
+					continue;
+				}
+				else if ((multiplier == -1 && colors[i] <= min))
+				{
+					continue;
+				}
+
+				colors[i] += timeChange * (1d / 255d) * multiplier * 0.00005;
+				break;
+			}
+		}
+
+		boolean isAllTop()
+		{
+			return colors[0] >= 1f && colors[1] >= 1f && colors[2] >= 1f;
+		}
+
+		boolean isAllBottom()
+		{
+			return colors[0] <= min && colors[1] <= min && colors[2] <= min;
+		}
+
+
+		private void renderBlock(ZombieBeaconTE entity, double x, double y, double z, float partial)
 		{
 			GL11.glPushMatrix();
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
 			GL11.glScalef(1.0F, -1.0F, -1.0F);
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-			GL11.glRotatef(0f, 0.0F, 1.0F, 0.0F);
-			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 
 			this.bindTexture(texture);
-			model.renderAll();
+
+			float timeChange = (float) entity.getWorldObj().getTotalWorldTime() + partial;
+			float offset = (float) Math.sin(Math.PI / 46 * timeChange) * 0.05f;
+
+			GL11.glColor3f(colors[0], colors[1], colors[2]);
+
+			// rotations
+			model.floater.rotateAngleZ = (float) Math.PI / 32 * timeChange;
+			model.floater.rotateAngleY = (float) Math.PI / 32 * timeChange;
+			model.floater.rotateAngleX = (float) Math.PI / 128 * timeChange;
+
+			// render floater
+			model.floater.offsetY += offset;
+			model.floater.render(0.0625f);
+			model.floater.offsetY -= offset;
+
+			// base
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			model.base.render(0.0625f);
 
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 			GL11.glPopMatrix();
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		}
 
-		private void renderBeam(ZombieBeaconTE entity, double x, double y, double z, float thing)
+		private void renderBeam(ZombieBeaconTE entity, double x, double y, double z, float partial)
 		{
 			float intensity = entity.getBeamIntensity();
+
+			// offset y a bit higher...
+			int opacity = 32;
+
 
 			// stolen from the Beacon code
 
@@ -174,11 +246,13 @@ public class ZombieBeacon extends BlockContainer
 			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F);
 			GL11.glDisable(GL11.GL_LIGHTING);
 			GL11.glDisable(GL11.GL_CULL_FACE);
-			GL11.glDisable(GL11.GL_BLEND);
+			//GL11.glDisable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glDepthMask(true);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+			GL11.glColor3f(colors[0], colors[1], colors[2]);
 
-			float f2 = (float) entity.getWorldObj().getTotalWorldTime() + thing;
+			float f2 = (float) entity.getWorldObj().getTotalWorldTime() + partial;
 			float f3 = -f2 * 0.2F - (float) MathHelper.floor_float(-f2 * 0.1F);
 			double d3 = f2 * 0.025D * (-1.5D);
 
@@ -198,7 +272,7 @@ public class ZombieBeacon extends BlockContainer
 			double d17 = (double) (256.0F * intensity) * (0.5D / d4) + d16;
 
 			tessellator.startDrawingQuads();
-			tessellator.setColorRGBA(255, 255, 255, 32);
+			tessellator.setColorRGBA((int) (colors[0] * 255), (int) (colors[1] * 255), (int) (colors[2] * 255), opacity);
 			tessellator.addVertexWithUV(x + d5, y + d13, z + d6, d15, d17);
 			tessellator.addVertexWithUV(x + d5, y, z + d6, d15, d16);
 			tessellator.addVertexWithUV(x + d7, y, z + d8, d14, d16);
@@ -217,7 +291,7 @@ public class ZombieBeacon extends BlockContainer
 			tessellator.addVertexWithUV(x + d5, y + d13, z + d6, d14, d17);
 			tessellator.draw();
 
-			GL11.glEnable(GL11.GL_BLEND);
+			//GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glDepthMask(false);
 
@@ -236,7 +310,7 @@ public class ZombieBeacon extends BlockContainer
 			double d30 = (double) (256.0F * intensity) + d29;
 
 			tessellator.startDrawingQuads();
-			tessellator.setColorRGBA(255, 255, 255, 32);
+			tessellator.setColorRGBA((int) (colors[0] * 255), (int) (colors[1] * 255), (int) (colors[2] * 255), opacity);
 			tessellator.addVertexWithUV(x + d18, y + d26, z + d19, d28, d30);
 			tessellator.addVertexWithUV(x + d18, y, z + d19, d28, d29);
 			tessellator.addVertexWithUV(x + d20, y, z + d21, d27, d29);
@@ -255,6 +329,7 @@ public class ZombieBeacon extends BlockContainer
 			tessellator.addVertexWithUV(x + d18, y + d26, z + d19, d27, d30);
 			tessellator.draw();
 
+			GL11.glColor3f(1, 1, 1);
 			GL11.glEnable(GL11.GL_LIGHTING);
 			GL11.glEnable(GL11.GL_TEXTURE_2D);
 			GL11.glDepthMask(true);
@@ -263,6 +338,7 @@ public class ZombieBeacon extends BlockContainer
 		@Override
 		public void renderTileEntityAt(TileEntity tileentity, double d0, double d1, double d2, float f)
 		{
+			updateColors((ZombieBeaconTE) tileentity, f);
 			renderBlock((ZombieBeaconTE) tileentity, d0, d1, d2, f);
 			renderBeam((ZombieBeaconTE) tileentity, d0, d1, d2, f);
 		}
@@ -271,32 +347,30 @@ public class ZombieBeacon extends BlockContainer
 	private static class ZombieBeaconModel extends ModelBase
 	{
 		public ModelRenderer base;
-
+		public ModelRenderer floater;
 
 		public ZombieBeaconModel()
 		{
-//			this.chestLid.addBox(0.0F, -5.0F, -14.0F, 14, 5, 14, 0.0F);
-//			this.chestLid.rotationPointX = 1.0F;
-//			this.chestLid.rotationPointY = 7.0F;
-//			this.chestLid.rotationPointZ = 15.0F;
-//			this.chestKnob = (new ModelRenderer(this, 0, 0)).setTextureSize(64, 64);
-//			this.chestKnob.addBox(-1.0F, -2.0F, -15.0F, 2, 4, 1, 0.0F);
-//			this.chestKnob.rotationPointX = 8.0F;
-//			this.chestKnob.rotationPointY = 7.0F;
-//			this.chestKnob.rotationPointZ = 15.0F;
-			this.base = (new ModelRenderer(this, 0, 19)).setTextureSize(64, 64);
-			this.base.addBox(0.0F, 0.0F, 0.0F, 14, 5, 14, 0.0F);
-			this.base.rotationPointX = 1.0F;
-			this.base.rotationPointY = 11.0F;
-			this.base.rotationPointZ = 1.0F;
-		}
+			floater = new ModelRenderer(this, 0, 0);
+			floater.setTextureSize(64, 64);
+			floater.addBox(-1.5F, -1.5F, -1.5F, 1, 1, 1, 0f);
+			floater.addBox(-1.5F, -1.5F, .5F, 1, 1, 1, 0f);
+			floater.addBox(-1.5F, .5F, -1.5F, 1, 1, 1, 0f);
+			floater.addBox(-1.5F, .5F, .5F, 1, 1, 1, 0f);
+			floater.addBox(.5F, -1.5F, -1.5F, 1, 1, 1, 0f);
+			floater.addBox(.5F, -1.5F, .5F, 1, 1, 1, 0f);
+			floater.addBox(.5F, .5F, -1.5F, 1, 1, 1, 0f);
+			floater.addBox(.5F, .5F, .5F, 1, 1, 1, 0f);
+			floater.offsetX = .5f;
+			floater.offsetY = .4f;
+			floater.offsetZ = .5f;
 
-		/**
-		 * This method renders out all parts of the chest model.
-		 */
-		public void renderAll()
-		{
-			base.render(0.0625F);
+			base = new ModelRenderer(this, 0, 5);
+			base.setTextureSize(64, 64);
+			base.addBox(0.0F, 0.0F, 0.0F, 14, 5, 14, 0.0F);
+			base.rotationPointX = 1.0F;
+			base.rotationPointY = 11.0F;
+			base.rotationPointZ = 1.0F;
 		}
 	}
 }
