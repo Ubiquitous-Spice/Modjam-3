@@ -1,9 +1,9 @@
 package com.github.ubiquitousspice.mobjam;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSand;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 
@@ -74,11 +74,11 @@ public class WorldGenHandler
 		}
 
 		// clear insides
-		for (int x = cx - RADIUS - 1; x <= cx + RADIUS - 1; x++)
+		for (int x = cx - RADIUS + 1; x < cx + RADIUS; x++)
 		{
-			for (int z = cz - RADIUS - 1; z <= cz + RADIUS - 1; z++)
+			for (int z = cz - RADIUS + 1; z < cz + RADIUS; z++)
 			{
-				for (int y = highestBlock + 1; y <= highestBlock + 1 + HEIGHT; y++)
+				for (int y = highestBlock + 1; y <= highestBlock + HEIGHT + 1; y++)
 				{
 					world.setBlock(x, y, z, 0);
 				}
@@ -98,7 +98,7 @@ public class WorldGenHandler
 			for (int z = cz - RADIUS; z <= cz + RADIUS; z++)
 			{
 				int y = 255;
-				while (isBlockAllowed(world, x, y, z) && y > highest)
+				while (!isValidTop(world, x, y, z) && y > highest)
 				{
 					y--;
 				}
@@ -114,21 +114,20 @@ public class WorldGenHandler
 	/**
 	 * Returns true if the block is not considered a valid block to gen on. It isnt the ground.
 	 */
-	protected static boolean isBlockAllowed(World world, int x, int y, int z)
+	protected static boolean isValidTop(World world, int x, int y, int z)
 	{
-		int id = world.getBlockId(x, y, z);
-		if (id == 0)
+		if (world.isAirBlock(x, y, z))
 		{
-			return true;
+			return false;
 		}
 
-		Block block = BlockSand.blocksList[id];
+		Block block = Block.blocksList[world.getBlockId(x, y, z)];
 
-		if (block.isLeaves(world, x, y, z) || block.isWood(world, x, y, z))
+		if (block.isLeaves(world, x, y, z) || block.isWood(world, x, y, z) || block.isBlockFoliage(world, x, y, z))
 		{
-			return true;
+			return false;
 		}
 
-		return false;
+		return block.isBlockSolidOnSide(world, x, y, z, ForgeDirection.UP);
 	}
 }

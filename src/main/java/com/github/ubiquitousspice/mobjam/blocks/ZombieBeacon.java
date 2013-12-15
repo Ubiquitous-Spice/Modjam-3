@@ -186,7 +186,7 @@ public class ZombieBeacon extends BlockContainer
 					continue;
 				}
 
-				colors[i] += timeChange * (1d / 255d) * multiplier * 0.00005;
+				colors[i] += timeChange * (1d / 255d) * multiplier * 0.001;
 				break;
 			}
 		}
