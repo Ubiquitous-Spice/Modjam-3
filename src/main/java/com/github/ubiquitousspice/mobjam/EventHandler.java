@@ -40,8 +40,8 @@ public class EventHandler
 		if (spawn.posX / 16 == event.chunkX && spawn.posZ / 16 == event.chunkZ)
 		{
 			final World world = event.world;
-			final int cx = event.chunkX * 16 + 8;
-			final int cz = event.chunkZ * 16 + 8;
+			final int cx = spawn.posX;
+			final int cz = spawn.posZ;
 			final int highest = getHighestBlock(world, cx, cz);
 			genFort(world, cx, highest, cz);
 		}
