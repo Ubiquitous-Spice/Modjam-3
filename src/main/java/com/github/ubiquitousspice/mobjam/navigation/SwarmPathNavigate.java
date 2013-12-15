@@ -27,7 +27,7 @@ public class SwarmPathNavigate extends PathNavigate
 	 * The number of blocks (extra) +/- in each axis that get pulled out as cache for the pathfinder's search space
 	 */
 	private AttributeInstance pathSearchRange;
-	private boolean noSunPathfind;
+	private boolean noSunPathfind = false;
 
 	/**
 	 * Time, in number of ticks, following the current path
