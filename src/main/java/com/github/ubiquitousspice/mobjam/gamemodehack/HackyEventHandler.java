@@ -1,6 +1,7 @@
 package com.github.ubiquitousspice.mobjam.gamemodehack;
 
 import com.github.ubiquitousspice.mobjam.Constants;
+import com.google.common.base.Throwables;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.network.IConnectionHandler;
 import cpw.mods.fml.common.network.Player;
@@ -12,13 +13,21 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.multiplayer.NetClientHandler;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.logging.ILogAgent;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.NetLoginHandler;
 import net.minecraft.network.packet.NetHandler;
 import net.minecraft.network.packet.Packet1Login;
+import net.minecraft.profiler.Profiler;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldProvider;
+import net.minecraft.world.WorldSettings;
+import net.minecraft.world.storage.ISaveHandler;
+import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.world.WorldEvent;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -26,6 +35,19 @@ import java.util.Arrays;
 @SideOnly(Side.CLIENT)
 public class HackyEventHandler implements IConnectionHandler
 {
+	public HackyEventHandler()
+	{
+		try
+		{
+			worldInfoField = World.class.getDeclaredFields()[25];
+			worldInfoField.setAccessible(true);
+		}
+		catch (Throwable t)
+		{
+			Throwables.propagate(t);
+		}
+	}
+
 	@SideOnly(Side.CLIENT)
 	@ForgeSubscribe
 	public void handleGuiOpen(GuiOpenEvent event)
@@ -60,6 +82,23 @@ public class HackyEventHandler implements IConnectionHandler
 					}
 				}
 			}
+		}
+	}
+
+	Field worldInfoField;
+
+	@ForgeSubscribe
+	public void handleWorldLoad(WorldEvent.Load event)
+	{
+		final World world = event.world;
+		final WorldInfo worldInfo = world.getWorldInfo();
+		try
+		{
+			worldInfoField.set(world, new HackedWorldInfo(worldInfo));
+		}
+		catch (Throwable t)
+		{
+			Throwables.propagate(t);
 		}
 	}
 
