@@ -102,7 +102,7 @@ public class MobJam
 					{
 						if (o1.equals(o2))
 						{
-							System.out.println("Removing from entity maps: " + o1 + " and " + o2);
+							System.out.println("Removing from entity maps: " + entry.getKey() + " and " + entry.getValue());
 							removemap.put(map, o1);
 							continue entryloop;
 						}
