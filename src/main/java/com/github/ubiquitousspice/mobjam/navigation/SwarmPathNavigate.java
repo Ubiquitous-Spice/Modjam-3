@@ -491,27 +491,27 @@ public class SwarmPathNavigate extends PathNavigate
 	 */
 	private boolean isPositionClear(int par1, int par2, int par3, int par4, int par5, int par6, Vec3 par7Vec3, double par8, double par10)
 	{
-//		for (int k1 = par1; k1 < par1 + par4; ++k1)
-//		{
-//			for (int l1 = par2; l1 < par2 + par5; ++l1)
-//			{
-//				for (int i2 = par3; i2 < par3 + par6; ++i2)
-//				{
-//					double d2 = (double) k1 + 0.5D - par7Vec3.xCoord;
-//					double d3 = (double) i2 + 0.5D - par7Vec3.zCoord;
-//
-//					if (d2 * par8 + d3 * par10 >= 0.0D)
-//					{
-//						int j2 = this.worldObj.getBlockId(k1, l1, i2);
-//
+		for (int k1 = par1; k1 < par1 + par4; ++k1)
+		{
+			for (int l1 = par2; l1 < par2 + par5; ++l1)
+			{
+				for (int i2 = par3; i2 < par3 + par6; ++i2)
+				{
+					double d2 = (double) k1 + 0.5D - par7Vec3.xCoord;
+					double d3 = (double) i2 + 0.5D - par7Vec3.zCoord;
+
+					if (d2 * par8 + d3 * par10 >= 0.0D)
+					{
+						int j2 = this.worldObj.getBlockId(k1, l1, i2);
+
 //						if (j2 > 0 && !Block.blocksList[j2].getBlocksMovement(this.worldObj, k1, l1, i2))
 //						{
 //							return false;
-//						}
-//					}
-//				}
-//			}
-//		}
+//						}//never blocks movement:
+					}
+				}
+			}
+		}
 
 		return true;
 	}
