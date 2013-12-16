@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -166,7 +167,7 @@ public class SwarmPathNavigate extends PathNavigate
 		int l2 = i1 + k1;
 		int i3 = j1 + k1;
 		ChunkCache chunkcache = new ChunkCache(worldObj, l1, i2, j2, k2, l2, i3, 0);
-		PathEntity pathentity = (new SwarmPathFinder(chunkcache, par6, par7, par8, par9)).createEntityPathTo(par1Entity, par2, par3, par4, par5);
+		PathEntity pathentity = (new PathFinder(chunkcache, par6, par7, par8, par9)).createEntityPathTo(par1Entity, par2, par3, par4, par5);
 		return pathentity;
 	}
 
@@ -283,7 +284,6 @@ public class SwarmPathNavigate extends PathNavigate
 				break;
 			}
 		}
-
 		float f = this.theEntity.width * this.theEntity.width;
 		int k;
 
@@ -312,6 +312,9 @@ public class SwarmPathNavigate extends PathNavigate
 		{
 			if (vec3.squareDistanceTo(this.lastPosCheck) < 2.25D)
 			{
+				System.out.println("lel");
+				//theEntity.setDead();
+				//worldObj.createExplosion()
 				this.clearPathEntity();
 			}
 

@@ -4,12 +4,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class EntityTarget extends Entity
+public class EntityTarget extends EntityLiving
 {
 	public EntityTarget(World par1World)
 	{
@@ -42,10 +43,10 @@ public class EntityTarget extends Entity
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
+	public void readEntityFromNBT(NBTTagCompound nbttagcompound) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound nbttagcompound) {}
+	public void writeEntityToNBT(NBTTagCompound nbttagcompound) {}
 
 	@Override
 	protected boolean canTriggerWalking()

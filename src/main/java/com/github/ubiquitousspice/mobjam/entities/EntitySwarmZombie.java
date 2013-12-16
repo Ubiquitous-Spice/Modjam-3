@@ -1,16 +1,12 @@
 package com.github.ubiquitousspice.mobjam.entities;
 
-import com.github.ubiquitousspice.mobjam.navigation.EntityAIBreakBlocks;
 import com.github.ubiquitousspice.mobjam.navigation.EntityAISwarmSpawn;
 import com.github.ubiquitousspice.mobjam.navigation.SwarmPathNavigate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -56,12 +52,12 @@ public class EntitySwarmZombie extends EntityMob
 		navigator = new SwarmPathNavigate(this, world);
 		this.getNavigator().setBreakDoors(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIBreakBlocks(this));
-		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-		this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
-		this.tasks.addTask(4, new EntityAISwarmSpawn(this));
-		this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-		this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityTarget.class, 0, true));
+		//this.tasks.addTask(1, new EntityAIBreakBlocks(this));
+		this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
+		this.tasks.addTask(3, new EntityAISwarmSpawn(this));
+		this.tasks.addTask(4, new EntityAIWander(this, 0.5D));
+		this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));//todo: target the beacon
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 
