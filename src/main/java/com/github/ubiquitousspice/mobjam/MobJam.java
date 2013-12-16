@@ -4,7 +4,6 @@ import com.github.ubiquitousspice.mobjam.blocks.Corpses;
 import com.github.ubiquitousspice.mobjam.blocks.ZombieBeacon;
 import com.github.ubiquitousspice.mobjam.entities.EntityFlyingFlesh;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
-import com.github.ubiquitousspice.mobjam.entities.EntityTarget;
 import com.github.ubiquitousspice.mobjam.network.PacketHandler;
 import com.github.ubiquitousspice.mobjam.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
@@ -123,7 +122,6 @@ public class MobJam
 		}
 		EntityList.addMapping(EntitySwarmZombie.class, "Zombie", 54, 44975, 7969893);
 
-		EntityRegistry.registerModEntity(EntityTarget.class, "BeaconTarget", 0, this, 20, 100, false);
 		EntityRegistry.registerModEntity(EntityFlyingFlesh.class, "FlyingFlesh", 0, this, 20, 100, false);
 	}
 
