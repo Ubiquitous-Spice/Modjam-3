@@ -5,12 +5,10 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.ChunkCoordinates;
 
-import java.util.Random;
-
 public class EntityAISwarmSpawn extends EntityAIBase
 {
 
-	private final Random random = new Random();
+	private boolean shouldRun;
 	private EntityLiving entityLiving;
 
 	/**
@@ -47,6 +45,7 @@ public class EntityAISwarmSpawn extends EntityAIBase
 	@Override
 	public boolean shouldExecute()
 	{
-		return random.nextBoolean();//I don't know why this works.
+		shouldRun = !shouldRun;
+		return shouldRun;//I don't know why this works.
 	}
 }
