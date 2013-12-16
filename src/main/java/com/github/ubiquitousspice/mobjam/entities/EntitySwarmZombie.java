@@ -1,5 +1,7 @@
 package com.github.ubiquitousspice.mobjam.entities;
 
+import com.github.ubiquitousspice.mobjam.navigation.EntityAIBreakBlocks;
+import com.github.ubiquitousspice.mobjam.navigation.EntityAISwarmSpawn;
 import com.github.ubiquitousspice.mobjam.navigation.SwarmPathNavigate;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -51,7 +53,7 @@ public class EntitySwarmZombie extends EntityMob
 		navigator = new SwarmPathNavigate(this, world);
 		this.getNavigator().setBreakDoors(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIBreakDoor(this));
+		this.tasks.addTask(1, new EntityAIBreakBlocks(this, navigator));
 		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
 		this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
 		this.tasks.addTask(4, new EntityAISwarmSpawn(this));

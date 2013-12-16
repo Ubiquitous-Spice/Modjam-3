@@ -1,4 +1,4 @@
-package com.github.ubiquitousspice.mobjam.entities;
+package com.github.ubiquitousspice.mobjam.navigation;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;

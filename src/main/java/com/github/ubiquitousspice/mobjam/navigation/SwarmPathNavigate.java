@@ -29,6 +29,11 @@ public class SwarmPathNavigate extends PathNavigate
 	private AttributeInstance pathSearchRange;
 	private boolean noSunPathfind = false;
 
+	public int getTotalTicks()
+	{
+		return totalTicks;
+	}
+
 	/**
 	 * Time, in number of ticks, following the current path
 	 */
