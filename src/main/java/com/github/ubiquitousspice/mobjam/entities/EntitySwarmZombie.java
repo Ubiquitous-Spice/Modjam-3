@@ -151,9 +151,9 @@ public class EntitySwarmZombie extends EntityMob
 					for (int[] coords : activeBlocks)
 					{
 						worldObj.setBlockToAir(coords[0], coords[1], coords[2]/*, true*/);
-						worldObj.playAuxSFX(1012, coords[0], coords[1], coords[2], 0);
 						timeStopped = 0;
 					}
+					worldObj.playAuxSFX(1012, MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ), 0);
 					activeBlocks.clear();
 				}
 			}
