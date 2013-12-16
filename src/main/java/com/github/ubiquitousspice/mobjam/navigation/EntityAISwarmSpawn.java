@@ -8,7 +8,7 @@ import net.minecraft.util.ChunkCoordinates;
 public class EntityAISwarmSpawn extends EntityAIBase
 {
 
-	private boolean shouldRun;
+	private boolean shouldRun = true;
 	private EntityLiving entityLiving;
 
 	/**
@@ -38,7 +38,6 @@ public class EntityAISwarmSpawn extends EntityAIBase
 	public void startExecuting()
 	{
 		ChunkCoordinates spawn = entityLiving.worldObj.getSpawnPoint();
-
 		this.entityPathNavigate.tryMoveToXYZ(spawn.posX, spawn.posY, spawn.posZ, 1);
 	}
 
