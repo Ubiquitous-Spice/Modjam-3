@@ -7,7 +7,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -53,7 +56,7 @@ public class EntitySwarmZombie extends EntityMob
 		navigator = new SwarmPathNavigate(this, world);
 		this.getNavigator().setBreakDoors(true);
 		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(1, new EntityAIBreakBlocks(this, navigator));
+		this.tasks.addTask(1, new EntityAIBreakBlocks(this));
 		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
 		this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
 		this.tasks.addTask(4, new EntityAISwarmSpawn(this));
@@ -61,7 +64,7 @@ public class EntitySwarmZombie extends EntityMob
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 
-		if (genClones && world != null)
+		if (genClones && world != null && false)// TODO: FIX
 		{
 			int day = (int) world.getTotalWorldTime() / 24000;
 			int tospawn = 20;//(int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
