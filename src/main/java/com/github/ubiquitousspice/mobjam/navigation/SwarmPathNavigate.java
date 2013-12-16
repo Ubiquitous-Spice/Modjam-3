@@ -139,7 +139,7 @@ public class SwarmPathNavigate extends PathNavigate
 	 */
 	public float getPathSearchRange()
 	{
-		return (float) this.pathSearchRange.getAttributeValue();
+		return 1000;
 	}
 
 	/**
@@ -523,4 +523,5 @@ public class SwarmPathNavigate extends PathNavigate
 
 		return true;
 	}
+
 }

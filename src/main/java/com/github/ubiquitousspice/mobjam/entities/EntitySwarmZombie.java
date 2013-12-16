@@ -26,6 +26,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDummyContainer;
 
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class EntitySwarmZombie extends EntityMob
@@ -79,23 +81,90 @@ public class EntitySwarmZombie extends EntityMob
 
 	Vec3 lastpos = Vec3.createVectorHelper(0, 0, 0);
 	int timeStopped = 0;
+	List<int[]> activeBlocks = new LinkedList<int[]>();
 
 	@Override
 	public void onEntityUpdate()
 	{
 		super.onEntityUpdate();
 		Vec3 pos = Vec3.createVectorHelper(posX, posY, posZ);
-		if (pos.distanceTo(lastpos) < 2.5D)
+		if (pos.distanceTo(lastpos) < 0.05D)
 		{
 			timeStopped++;
 		}
-		if (timeStopped > 200)
+		else
 		{
-			worldObj.createExplosion(this, posX, posY, posZ, 5, true);
-			worldObj.removeEntity(this);
+			timeStopped = 0;
+			for (int[] coords : activeBlocks)
+			{
+				worldObj.destroyBlockInWorldPartially(entityId, coords[0], coords[1], coords[2], 0);
+			}
+			activeBlocks.clear();
+		}
+		if (timeStopped == 200)
+		{
+
+			for (int y : new int[] {0, 1})
+			{
+				for (int x : new int[] {-1, 1})
+				{
+					if (!worldObj.isAirBlock(MathHelper.floor_double(posX + x), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ)))
+					{
+						System.out.println(
+								MathHelper.floor_double(posX + x) + " " + MathHelper.floor_double(posY + y) + " " + MathHelper.floor_double(posZ));
+						activeBlocks
+								.add(new int[] {MathHelper.floor_double(posX + x), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ)});
+					}
+				}
+				for (int z : new int[] {-1, 1})
+				{
+					if (!worldObj.isAirBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ + z)))
+					{
+						System.out.println(
+								MathHelper.floor_double(posX) + " " + MathHelper.floor_double(posY + y) + " " + MathHelper.floor_double(posZ + z));
+						activeBlocks
+								.add(new int[] {MathHelper.floor_double(posX), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ + z)});
+					}
+				}
+			}
+		}
+		else if (timeStopped > 200)
+		{
+			if (activeBlocks.isEmpty())
+			{
+				timeStopped = 0;
+			}
+			else
+			{
+				int breakingTime = timeStopped - 200;
+				int i = (int) ((float) breakingTime / 240.0F * 10.0F);
+
+
+				for (int[] coords : activeBlocks)
+				{
+					worldObj.destroyBlockInWorldPartially(entityId, coords[0], coords[1], coords[2], i);
+				}
+
+
+				if (breakingTime == 240)
+				{
+					for (int[] coords : activeBlocks)
+					{
+						worldObj.setBlockToAir(coords[0], coords[1], coords[2]/*, true*/);
+						worldObj.playAuxSFX(1012, coords[0], coords[1], coords[2], 0);
+						timeStopped = 0;
+					}
+					activeBlocks.clear();
+				}
+			}
+
 		}
 		lastpos = pos;
-		System.out.println(timeStopped);
+		/*for (int[] coords : activeBlocks)
+		{
+			System.out.println(coords[0] + " " + coords[1] + " " + coords[2]);
+		}*/
+//		System.out.println(timeStopped);
 	}
 
 	protected void applyEntityAttributes()
