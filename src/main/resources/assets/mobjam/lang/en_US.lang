@@ -1,9 +1,5 @@
-gameMode.${modid.toLowerCase()}=${modid}
-selectWorld.gameMode.${modid.toLowerCase()}.line1=GameMode from the ${modid} mod
-selectWorld.gameMode.${modid.toLowerCase()}.line2=
-
-# for the dev workspace..... ONLY
 gamemode.mobjam=MobJam
 selectWorld.gameMode.mobjam=MobJam
-selectWorld.gameMode.mobjam.line1=GameMode from the MobJam mod
+selectWorld.gameMode.mobjam.line1=  GameMode from the MobJam mod
 selectWorld.gameMode.mobjam.line2=
+tile.mobjam.corpses=Corpses
