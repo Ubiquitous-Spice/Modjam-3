@@ -2,6 +2,7 @@ package com.github.ubiquitousspice.mobjam;
 
 import com.github.ubiquitousspice.mobjam.blocks.ZombieBeacon;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
+import com.github.ubiquitousspice.mobjam.entities.EntityTarget;
 import com.github.ubiquitousspice.mobjam.network.PacketHandler;
 import com.github.ubiquitousspice.mobjam.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
@@ -10,10 +11,9 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.EnumGameType;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -115,8 +115,7 @@ public class MobJam
 		}
 		EntityList.addMapping(EntitySwarmZombie.class, "Zombie", 54, 44975, 7969893);
 
-		// test recipe
-		GameRegistry.addShapelessRecipe(new ItemStack(zombieBeacon), Block.dirt);
+		EntityRegistry.registerModEntity(EntityTarget.class, "BeaconTarget", 0, this, 20, 100, false);
 	}
 
 }

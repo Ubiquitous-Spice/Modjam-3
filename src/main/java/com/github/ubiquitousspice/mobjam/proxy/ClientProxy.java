@@ -2,6 +2,7 @@ package com.github.ubiquitousspice.mobjam.proxy;
 
 import com.github.ubiquitousspice.mobjam.blocks.ZombieBeacon;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
+import com.github.ubiquitousspice.mobjam.entities.EntityTarget;
 import com.github.ubiquitousspice.mobjam.entities.SwarmZombieRenderer;
 import com.github.ubiquitousspice.mobjam.gamemodehack.HackyEventHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -19,6 +20,7 @@ public class ClientProxy extends CommonProxy
 	{
 		ClientRegistry.bindTileEntitySpecialRenderer(ZombieBeacon.ZombieBeaconTE.class, new ZombieBeacon.ZombieBeaconTESR());
 		RenderingRegistry.registerEntityRenderingHandler(EntitySwarmZombie.class, new SwarmZombieRenderer());
+		RenderingRegistry.registerEntityRenderingHandler(EntityTarget.class, new EntityTarget.EntityTargetRenderer());
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.github.ubiquitousspice.mobjam;
 
+import com.github.ubiquitousspice.mobjam.entities.EntityTarget;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -112,6 +113,11 @@ public class EventHandler
 		//beacon
 		world.setBlock(cx, highestBlock + 2, cz, MobJam.zombieBeacon.blockID);
 		world.setBlock(cx, highestBlock + 1, cz, blockid);
+
+		// spawn block
+		EntityTarget target = new EntityTarget(world);
+		target.setLocationAndAngles(cx + .5, highestBlock + 2.5, cz + .5, 0f, 0f);
+		world.spawnEntityInWorld(target);
 	}
 
 	protected static int getHighestBlock(final World world, final int cx, final int cz)
