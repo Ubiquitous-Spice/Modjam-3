@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDummyContainer;
 
@@ -74,6 +75,27 @@ public class EntitySwarmZombie extends EntityMob
 				tospawn--;
 			}
 		}
+	}
+
+	Vec3 lastpos = Vec3.createVectorHelper(0, 0, 0);
+	int timeStopped = 0;
+
+	@Override
+	public void onEntityUpdate()
+	{
+		super.onEntityUpdate();
+		Vec3 pos = Vec3.createVectorHelper(posX, posY, posZ);
+		if (pos.distanceTo(lastpos) < 2.5D)
+		{
+			timeStopped++;
+		}
+		if (timeStopped > 200)
+		{
+			worldObj.createExplosion(this, posX, posY, posZ, 5, true);
+			worldObj.removeEntity(this);
+		}
+		lastpos = pos;
+		System.out.println(timeStopped);
 	}
 
 	protected void applyEntityAttributes()
