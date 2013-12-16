@@ -1,5 +1,6 @@
 package com.github.ubiquitousspice.mobjam;
 
+import com.github.ubiquitousspice.mobjam.blocks.Corpses;
 import com.github.ubiquitousspice.mobjam.blocks.ZombieBeacon;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import com.github.ubiquitousspice.mobjam.entities.EntityTarget;
@@ -48,6 +49,7 @@ public class MobJam
 	public static EnumGameType GAMEMODE;
 
 	public static ZombieBeacon zombieBeacon;
+	public static Corpses corpses;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -63,6 +65,11 @@ public class MobJam
 			zombieBeacon = new ZombieBeacon(501);
 			GameRegistry.registerBlock(zombieBeacon, "mobjam:zombieBeacon");
 			GameRegistry.registerTileEntity(ZombieBeacon.ZombieBeaconTE.class, "ZombieBeacon");
+
+			corpses = new Corpses(502);
+			corpses.setUnlocalizedName("mobjam.corpses");
+			corpses.setTextureName("mobjam:corpses");
+			GameRegistry.registerBlock(corpses, "mobjam:corpses");
 		}
 	}
 
