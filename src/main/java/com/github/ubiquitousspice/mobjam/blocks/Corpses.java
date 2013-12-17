@@ -6,6 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 
 public class Corpses extends Block
 {
@@ -15,6 +16,7 @@ public class Corpses extends Block
 	{
 		super(par1, Material.sponge);
 		this.setCreativeTab(CreativeTabs.tabBlock);
+		this.setBlockUnbreakable();
 	}
 
 	@Override
@@ -58,4 +60,33 @@ public class Corpses extends Block
 				(double) z + this.maxZ);
 	}
 
+	@Override
+	public int getFireSpreadSpeed(World world, int x, int y, int z, int metadata, ForgeDirection face)
+	{
+		return 5;
+	}
+
+	@Override
+	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	{
+		return 20;
+	}
+
+	@Override
+	public boolean isCollidable()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isFlammable(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean isBlockBurning(World world, int x, int y, int z)
+	{
+		return super.isBlockBurning(world, x, y, z);
+	}
 }
