@@ -24,7 +24,6 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import static com.github.ubiquitousspice.mobjam.Constants.MODID;
-import static com.github.ubiquitousspice.mobjam.Constants.VERSION;
 
 @NetworkMod(
 		clientSideRequired = true,
@@ -56,9 +55,6 @@ public class MobJam
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		// set the Version
-		ModMetadata meta = event.getModMetadata();
-		meta.version = VERSION;
 
 		// get Logger
 		logger = event.getModLog();

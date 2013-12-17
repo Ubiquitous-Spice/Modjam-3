@@ -1,0 +1,14 @@
+{
+ "modinfoversion": 2,
+  "modlist": [{
+    "modid": "MobJam",
+    "name": "MobJam",
+    "description": "A simple mod adding some new chests with larger sizes, upgradeable in place. The feature chest is the crystal chest, which is see-through - this inventory contents can be viewed without opening the chest.",
+    "version": "0.1",
+    "mcversion": "1.6.4",
+    "authors": [ "AbrarSyed", "GUIpsp" ],
+    "credits": "UbiquitousSpice",
+    "requiredMods": [ "Forge" ],
+    "useDependencyInformation": "true"
+  }]
+}
