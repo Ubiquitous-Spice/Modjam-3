@@ -51,6 +51,11 @@ public class Util
 		return FMLCommonHandler.instance().getSidedDelegate().getServer().getGameType() == MobJam.GAMEMODE;
 	}
 
+	public static boolean isOurGameMode(World world)
+	{
+		return world.getWorldInfo().getGameType() == MobJam.GAMEMODE;
+	}
+
 	public static boolean isOurGameMode(EntityPlayerMP player)
 	{
 		return player.theItemInWorldManager.getGameType() == MobJam.GAMEMODE;

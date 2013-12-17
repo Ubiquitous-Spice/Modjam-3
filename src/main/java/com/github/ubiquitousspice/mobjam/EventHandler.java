@@ -25,22 +25,29 @@ public class EventHandler
 		if (event.entity instanceof EntitySwarmZombie)
 		{
 			World world = event.entity.worldObj;
-			if (world != null && !event.entity.getEntityData().getBoolean("hasSpawned"))
+			if (world != null)
 			{
-				int day = (int) world.getTotalWorldTime() / 24000;
-				int tospawn = (int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
-
-				while (tospawn > 0)
+				if (Util.isOurGameMode(event.entity.worldObj))
 				{
-					System.out.println(tospawn);
-					Entity ent = new EntitySwarmZombie(world, false);
-					ent.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 0, 0);
-					ent.getEntityData().setBoolean("hasSpawned", true);
-					world.spawnEntityInWorld(ent);
-					tospawn--;
+					if (!event.entity.getEntityData().getBoolean("hasSpawned"))
+					{
+						int day = (int) world.getTotalWorldTime() / 24000;
+						int tospawn = (int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
+						double hackyoffset = 0.001D;
+						while (tospawn > 0)
+						{
+							System.out.println(tospawn);
+							Entity ent = new EntitySwarmZombie(world, false);
+							ent.setLocationAndAngles(event.entity.posX + hackyoffset, event.entity.posY, event.entity.posZ, 0, 0);
+							ent.getEntityData().setBoolean("hasSpawned", true);
+							world.spawnEntityInWorld(ent);
+							tospawn--;
+							hackyoffset += 0.001D;
+						}
+					}
+					event.entity.getEntityData().setBoolean("hasSpawned", true);
 				}
 			}
-			event.entity.getEntityData().setBoolean("hasSpawned", true);
 		}
 	}
 
