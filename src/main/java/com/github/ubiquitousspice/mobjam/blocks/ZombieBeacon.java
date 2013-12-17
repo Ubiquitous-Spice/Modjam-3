@@ -1,6 +1,7 @@
 package com.github.ubiquitousspice.mobjam.blocks;
 
 import com.github.ubiquitousspice.mobjam.Constants;
+import com.github.ubiquitousspice.mobjam.MobJam;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -18,6 +19,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import org.lwjgl.opengl.GL11;
@@ -180,6 +182,12 @@ public class ZombieBeacon extends BlockContainer
 			}
 
 			return this.changeTime;
+		}
+
+		@Override
+		public void validate()
+		{
+			MobJam.BEACONS.put(this.worldObj.provider.dimensionId, new ChunkPosition(this.xCoord, this.yCoord, this.zCoord));
 		}
 	}
 

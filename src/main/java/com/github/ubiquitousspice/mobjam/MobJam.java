@@ -15,6 +15,7 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.EnumGameType;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -50,6 +51,7 @@ public class MobJam
 	public static ZombieBeacon zombieBeacon;
 	public static Corpses corpses;
 	public static ZombieBeacon.PillarBrick pillarBrick;
+	public static HashMap<Integer, ChunkPosition> BEACONS = new HashMap<Integer, ChunkPosition>(3);
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)

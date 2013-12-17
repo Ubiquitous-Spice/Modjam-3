@@ -1,9 +1,10 @@
 package com.github.ubiquitousspice.mobjam.navigation;
 
+import com.github.ubiquitousspice.mobjam.Util;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.world.ChunkPosition;
 
 public class EntityAISwarmSpawn extends EntityAIBase
 {
@@ -37,8 +38,8 @@ public class EntityAISwarmSpawn extends EntityAIBase
 	@Override
 	public void startExecuting()
 	{
-		ChunkCoordinates spawn = entityLiving.worldObj.getSpawnPoint();
-		this.entityPathNavigate.tryMoveToXYZ(spawn.posX, spawn.posY, spawn.posZ, 1);
+		ChunkPosition spawn = Util.getBeaconLoc(entityLiving.worldObj);
+		this.entityPathNavigate.tryMoveToXYZ(spawn.x, spawn.y, spawn.z, 1);
 	}
 
 	@Override

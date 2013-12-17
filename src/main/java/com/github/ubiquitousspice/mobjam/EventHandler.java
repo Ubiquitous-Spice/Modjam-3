@@ -30,7 +30,6 @@ public class EventHandler
 						double hackyoffset = 0.001D;
 						while (tospawn > 0)
 						{
-							System.out.println(tospawn);
 							Entity ent = new EntitySwarmZombie(world, false);
 							ent.setLocationAndAngles(event.entity.posX + hackyoffset, event.entity.posY, event.entity.posZ, 0, 0);
 							ent.getEntityData().setBoolean("hasSpawned", true);
@@ -60,6 +59,7 @@ public class EventHandler
 	}
 
 	private static final int RADIUS = 3;
+	private static final int INNER_RADIUS = 1;
 
 	private static final int HEIGHT = 3;
 
@@ -75,6 +75,16 @@ public class EventHandler
 				world.setBlock(x, highestBlock, z, blockid);
 			}
 		}
+
+		//gen game over floor
+		for (int x = cx - INNER_RADIUS; x <= cx + INNER_RADIUS; x++)
+		{
+			for (int z = cz - INNER_RADIUS; z <= cz + INNER_RADIUS; z++)
+			{
+				world.setBlock(x, highestBlock, z, MobJam.pillarBrick.blockID);
+			}
+		}
+
 		//gen walls
 		{
 			//x walls
@@ -123,7 +133,7 @@ public class EventHandler
 
 		//beacon
 		world.setBlock(cx, highestBlock + 2, cz, MobJam.zombieBeacon.blockID);
-		world.setBlock(cx, highestBlock + 1, cz, blockid);
+		world.setBlock(cx, highestBlock + 1, cz, MobJam.pillarBrick.blockID);
 	}
 
 	protected static int getHighestBlock(final World world, final int cx, final int cz)

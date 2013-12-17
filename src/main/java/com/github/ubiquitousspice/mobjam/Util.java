@@ -5,6 +5,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 
 public class Util
@@ -47,5 +48,15 @@ public class Util
 	public static boolean isOurGameMode(World world)
 	{
 		return world.getWorldInfo().getGameType() == MobJam.GAMEMODE;
+	}
+
+	public static ChunkPosition getBeaconLoc(World world)
+	{
+		if (world == null)
+		{
+			return null;
+		}
+
+		return MobJam.BEACONS.get(world.provider.dimensionId);
 	}
 }
