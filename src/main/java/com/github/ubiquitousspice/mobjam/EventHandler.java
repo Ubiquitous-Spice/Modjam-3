@@ -25,7 +25,7 @@ public class EventHandler
 		if (event.entity instanceof EntitySwarmZombie)
 		{
 			World world = event.entity.worldObj;
-			if (world != null && !event.entity.getEntityData().getBoolean("hasSpawned"))//TODO: finish fixing
+			if (world != null && !event.entity.getEntityData().getBoolean("hasSpawned"))
 			{
 				int day = (int) world.getTotalWorldTime() / 24000;
 				int tospawn = (int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
