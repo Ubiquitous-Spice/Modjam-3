@@ -1,9 +1,15 @@
 package com.github.ubiquitousspice.mobjam.blocks;
 
+import com.github.ubiquitousspice.mobjam.entities.EntityFlyingFlesh;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -88,5 +94,40 @@ public class Corpses extends Block
 	public boolean isBlockBurning(World world, int x, int y, int z)
 	{
 		return super.isBlockBurning(world, x, y, z);
+	}
+
+	@Override
+	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion)
+	{
+		if (world.isRemote)
+		{
+			return;
+		}
+
+		int meta = world.getBlockMetadata(x, y, z) + 1;
+		for (int i = 0; i < meta; i++)
+		{
+			System.out.println("EXPLODING!");
+			int par2 = 6;
+			Entity entity = new EntityFlyingFlesh(world);
+			entity.setLocationAndAngles(x + .5d, y + 1, z + .5d, 0, 0);
+			entity.motionY = world.rand.nextDouble() * 0.1D + .7D;
+			entity.motionX += world.rand.nextGaussian() * 0.007499999832361937D * (double) par2;
+			entity.motionY += world.rand.nextGaussian() * 0.007499999832361937D * (double) par2;
+			entity.motionZ += world.rand.nextGaussian() * 0.007499999832361937D * (double) par2;
+			world.spawnEntityInWorld(entity);
+		}
+		super.onBlockExploded(world, x, y, z, explosion);
+	}
+
+	@Override
+	public void onEntityWalking(World world, int x, int y, int z, Entity entity)
+	{
+		if (entity instanceof EntityPlayer)
+		{
+			((EntityPlayer) entity).addPotionEffect(new PotionEffect(Potion.confusion.id, 100, 1000));
+			((EntityPlayer) entity).addPotionEffect(new PotionEffect(Potion.poison.id, 50, 20));
+		}
+		super.onEntityWalking(world, x, y, z, entity);
 	}
 }
