@@ -6,7 +6,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -60,24 +63,29 @@ public class EntitySwarmZombie extends EntityMob
 		this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
 		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
 		this.tasks.addTask(3, new EntityAISwarmSpawn(this));
-		this.tasks.addTask(4, new EntityAIWander(this, 0.5D));
+		this.tasks.addTask(4, new EntityAISwarmSpawn(this));//I don't even
 		this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));//todo: target the beacon
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
 		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 
-		if (genClones && world != null && false)// TODO: FIX
+		System.out.println(genClones + " " + world + " " + this);
+
+		if (genClones && world != null && !getEntityData().getBoolean("hasSpawned"))//TODO: finish fixing
 		{
 			int day = (int) world.getTotalWorldTime() / 24000;
 			int tospawn = 20;//(int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
 
 			while (tospawn > 0)
 			{
+				System.out.println(tospawn);
 				Entity ent = new EntitySwarmZombie(world, false);
-				ent.setPosition(this.posX, this.posY, this.posZ);
-				world.joinEntityInSurroundings(ent);
+				ent.setLocationAndAngles(this.posX, this.posY, this.posZ, 0, 0);
+				ent.getEntityData().setBoolean("hasSpawned", true);
+				world.spawnEntityInWorld(ent);
 				tospawn--;
 			}
 		}
+		getEntityData().setBoolean("hasSpawned", true);
 	}
 
 	Vec3 lastpos = Vec3.createVectorHelper(0, 0, 0);
@@ -111,8 +119,8 @@ public class EntitySwarmZombie extends EntityMob
 				{
 					if (!worldObj.isAirBlock(MathHelper.floor_double(posX + x), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ)))
 					{
-						System.out.println(
-								MathHelper.floor_double(posX + x) + " " + MathHelper.floor_double(posY + y) + " " + MathHelper.floor_double(posZ));
+//						System.out.println(
+//								MathHelper.floor_double(posX + x) + " " + MathHelper.floor_double(posY + y) + " " + MathHelper.floor_double(posZ));
 						activeBlocks
 								.add(new int[] {MathHelper.floor_double(posX + x), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ)});
 					}
@@ -121,8 +129,8 @@ public class EntitySwarmZombie extends EntityMob
 				{
 					if (!worldObj.isAirBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ + z)))
 					{
-						System.out.println(
-								MathHelper.floor_double(posX) + " " + MathHelper.floor_double(posY + y) + " " + MathHelper.floor_double(posZ + z));
+//						System.out.println(
+//								MathHelper.floor_double(posX) + " " + MathHelper.floor_double(posY + y) + " " + MathHelper.floor_double(posZ + z));
 						activeBlocks
 								.add(new int[] {MathHelper.floor_double(posX), MathHelper.floor_double(posY + y), MathHelper.floor_double(posZ + z)});
 					}
@@ -197,6 +205,10 @@ public class EntitySwarmZombie extends EntityMob
 			{
 				spewFlesh();
 			}
+		}
+		for (int[] coords : activeBlocks)
+		{
+			worldObj.destroyBlockInWorldPartially(entityId, coords[0], coords[1], coords[2], 0);
 		}
 	}
 
