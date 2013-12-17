@@ -72,7 +72,7 @@ public class MobJam
 			GameRegistry.registerBlock(corpses, "mobjam:corpses");
 
 			pillarBrick = new ZombieBeacon.PillarBrick(503);
-			pillarBrick.setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("stonebricksmooth")
+			pillarBrick.setStepSound(Block.soundStoneFootstep).setUnlocalizedName("stonebricksmooth")
 					   .setTextureName("stonebrick");
 			GameRegistry.registerBlock(pillarBrick, "mobjam:PillarBrick");
 		}

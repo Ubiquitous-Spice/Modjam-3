@@ -3,17 +3,20 @@ package com.github.ubiquitousspice.mobjam.blocks;
 import com.github.ubiquitousspice.mobjam.Constants;
 import com.github.ubiquitousspice.mobjam.MobJam;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -27,7 +30,6 @@ import org.lwjgl.opengl.GL12;
 
 public class ZombieBeacon extends BlockContainer
 {
-
 	public static class PillarBrick extends BlockStoneBrick
 	{
 		public PillarBrick(int par1)
@@ -47,6 +49,40 @@ public class ZombieBeacon extends BlockContainer
 					par1World.setBlockToAir(par2, par3, par4);
 					par1World.setBlockToAir(par2, par3 + 1, par4);
 					par1World.createExplosion(par5Entity, par2, par3, par4, 50, true);
+
+					// game has ended
+					if (FMLCommonHandler.instance().getSidedDelegate().getServer().isSinglePlayer())
+					{
+						Minecraft.getMinecraft().thePlayer.attackEntityFrom(null, 10000f);
+					}
+					else
+					{
+						MinecraftServer.getServer().initiateShutdown();
+					}
+				}
+			}
+		}
+
+		@Override
+		public void onEntityWalking(World world, int x, int y, int z, Entity entity)
+		{
+			if (!world.isRemote)
+			{
+				if (entity instanceof EntitySwarmZombie)
+				{
+					world.setBlockToAir(x, y, z);
+					world.setBlockToAir(x, y + 1, z);
+					world.createExplosion(entity, x, y, z, 50, true);
+
+					// game has ended
+					if (FMLCommonHandler.instance().getSidedDelegate().getServer().isSinglePlayer())
+					{
+						Minecraft.getMinecraft().thePlayer.attackEntityFrom(null, 10000f);
+					}
+					else
+					{
+						MinecraftServer.getServer().initiateShutdown();
+					}
 				}
 			}
 		}

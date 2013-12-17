@@ -194,8 +194,7 @@ public class EntitySwarmZombie extends EntityMob
 	public void onDeath(DamageSource source)
 	{
 		super.onDeath(source);
-		//if (Util.isOurGameMode())
-		if (!worldObj.isRemote)
+		if (!worldObj.isRemote && Util.isOurGameMode(worldObj))
 		{
 			int random = (int) (Math.random() * 5);
 			for (int i = 0; i < random + 3; i++)
