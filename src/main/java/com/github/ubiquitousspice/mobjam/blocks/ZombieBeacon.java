@@ -1,6 +1,7 @@
 package com.github.ubiquitousspice.mobjam.blocks;
 
 import com.github.ubiquitousspice.mobjam.Constants;
+import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
@@ -9,6 +10,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -22,6 +24,16 @@ import org.lwjgl.opengl.GL12;
 
 public class ZombieBeacon extends BlockContainer
 {
+	@Override
+	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+	{
+		if (par5Entity instanceof EntitySwarmZombie)
+		{
+			par1World.setBlockToAir(par2, par3, par4);
+			par1World.createExplosion(par5Entity, par2, par3, par4, 50, true);
+		}
+	}
+
 	public ZombieBeacon(int par1)
 	{
 		super(par1, Material.iron);
