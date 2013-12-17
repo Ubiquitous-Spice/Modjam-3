@@ -14,6 +14,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityList;
 import net.minecraft.world.EnumGameType;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,6 +51,7 @@ public class MobJam
 
 	public static ZombieBeacon zombieBeacon;
 	public static Corpses corpses;
+	public static ZombieBeacon.PillarBrick pillarBrick;
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -70,6 +72,11 @@ public class MobJam
 			corpses.setUnlocalizedName("mobjam.corpses");
 			corpses.setTextureName("mobjam:corpses");
 			GameRegistry.registerBlock(corpses, "mobjam:corpses");
+
+			pillarBrick = new ZombieBeacon.PillarBrick(503);
+			pillarBrick.setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("stonebricksmooth")
+					   .setTextureName("stonebrick");
+			GameRegistry.registerBlock(pillarBrick, "mobjam:PillarBrick");
 		}
 	}
 

@@ -5,6 +5,7 @@ import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.block.BlockStoneBrick;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -24,12 +25,35 @@ import org.lwjgl.opengl.GL12;
 
 public class ZombieBeacon extends BlockContainer
 {
+
+	public static class PillarBrick extends BlockStoneBrick
+	{
+		public PillarBrick(int par1)
+		{
+			super(par1);
+			this.setBlockUnbreakable();
+			this.setResistance(6000000.0F);
+		}
+
+		@Override
+		public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+		{
+			if (par5Entity instanceof EntitySwarmZombie)
+			{
+				par1World.setBlockToAir(par2, par3, par4);
+				par1World.setBlockToAir(par2, par3 + 1, par4);
+				par1World.createExplosion(par5Entity, par2, par3, par4, 50, true);
+			}
+		}
+	}
+
 	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
 	{
 		if (par5Entity instanceof EntitySwarmZombie)
 		{
 			par1World.setBlockToAir(par2, par3, par4);
+			par1World.setBlockToAir(par2, par3 - 1, par4);
 			par1World.createExplosion(par5Entity, par2, par3, par4, 50, true);
 		}
 	}
