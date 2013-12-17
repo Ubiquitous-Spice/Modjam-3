@@ -7,7 +7,10 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
+import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -54,35 +57,16 @@ public class EntitySwarmZombie extends EntityMob
 	public EntitySwarmZombie(World world, boolean genClones)
 	{
 		super(world);
-		if (world == null || Util.isOurGameMode(world))
-		{
-			navigator = new SwarmPathNavigate(this, world);
-			this.getNavigator().setBreakDoors(true);
-			this.tasks.addTask(0, new EntityAISwimming(this));
-			this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-			this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
-			this.tasks.addTask(3, new EntityAISwarmSpawn(this));
-			this.tasks.addTask(4, new EntityAISwarmSpawn(this));//I don't even
-			this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
-			this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-			this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
-		}
-		else
-		{
-			this.getNavigator().setBreakDoors(true);//Default tasks
-			this.tasks.addTask(0, new EntityAISwimming(this));
-			this.tasks.addTask(1, new EntityAIBreakDoor(this));
-			this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-			this.tasks.addTask(3, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
-			this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
-			this.tasks.addTask(5, new EntityAIMoveThroughVillage(this, 1.0D, false));
-			this.tasks.addTask(6, new EntityAIWander(this, 1.0D));
-			this.tasks.addTask(7, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-			this.tasks.addTask(7, new EntityAILookIdle(this));
-			this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true));
-			this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
-			this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
-		}
+		navigator = new SwarmPathNavigate(this, world);
+		this.getNavigator().setBreakDoors(true);
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(1, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+		this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
+		this.tasks.addTask(3, new EntityAISwarmSpawn(this));
+		this.tasks.addTask(3, new EntityAISwarmSpawn(this));//I don't even
+		this.targetTasks.addTask(0, new EntityAIHurtByTarget(this, true));
+//		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, true));
+//		this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, 0, false));
 	}
 
 	Vec3 lastpos = Vec3.createVectorHelper(0, 0, 0);

@@ -38,8 +38,15 @@ public class EntityAISwarmSpawn extends EntityAIBase
 	@Override
 	public void startExecuting()
 	{
-		ChunkPosition spawn = Util.getBeaconLoc(entityLiving.worldObj);
-		this.entityPathNavigate.tryMoveToXYZ(spawn.x, spawn.y, spawn.z, 1);
+		try
+		{
+			ChunkPosition spawn = Util.getBeaconLoc(entityLiving.worldObj);
+			this.entityPathNavigate.tryMoveToXYZ(spawn.x, spawn.y, spawn.z, 1);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 	@Override

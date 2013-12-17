@@ -3,6 +3,7 @@ package com.github.ubiquitousspice.mobjam;
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -16,29 +17,42 @@ public class EventHandler
 	@ForgeSubscribe
 	public void spawnClones(EntityJoinWorldEvent event)
 	{
-		if (event.entity instanceof EntitySwarmZombie)
+//		System.out.println(event.entity);
+		World world = event.world;
+		if (event.entity instanceof EntityZombie)
 		{
-			World world = event.entity.worldObj;
+			Entity ent = new EntitySwarmZombie(world);
+			ent.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 0, 0);
+			world.spawnEntityInWorld(ent);
+			event.setCanceled(true);
+		}
+		else if (event.entity instanceof EntitySwarmZombie)
+		{
+//			System.out.println(world + "" + world.getTotalWorldTime() / 24000D);
 			if (world != null)
 			{
-				if (Util.isOurGameMode(world))
+//				System.out.println(!world.isRemote + "" + world.getTotalWorldTime() / 24000D);
+				if (!world.isRemote)
 				{
-					if (!event.entity.getEntityData().getBoolean("hasSpawned"))
+					if (Util.isOurGameMode(world))
 					{
-						int day = (int) world.getTotalWorldTime() / 24000;
-						int tospawn = (int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
-						double hackyoffset = 0.001D;
-						while (tospawn > 0)
+						if (!event.entity.getEntityData().getBoolean("hasSpawned"))
 						{
-							Entity ent = new EntitySwarmZombie(world, false);
-							ent.setLocationAndAngles(event.entity.posX + hackyoffset, event.entity.posY, event.entity.posZ, 0, 0);
-							ent.getEntityData().setBoolean("hasSpawned", true);
-							world.spawnEntityInWorld(ent);
-							tospawn--;
-							hackyoffset += 0.001D;
+							int day = (int) world.getTotalWorldTime() / 24000;
+							int tospawn = (int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
+							double hackyoffset = 0.01D;
+							while (tospawn > 0)
+							{
+								Entity ent = new EntitySwarmZombie(world, false);
+								ent.setLocationAndAngles(event.entity.posX + hackyoffset, event.entity.posY, event.entity.posZ, 0, 0);
+								ent.getEntityData().setBoolean("hasSpawned", true);
+								world.spawnEntityInWorld(ent);
+								tospawn--;
+								hackyoffset += 0.01D;
+							}
 						}
+						event.entity.getEntityData().setBoolean("hasSpawned", true);
 					}
-					event.entity.getEntityData().setBoolean("hasSpawned", true);
 				}
 			}
 		}
