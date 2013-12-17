@@ -7,7 +7,6 @@ import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import com.github.ubiquitousspice.mobjam.network.PacketHandler;
 import com.github.ubiquitousspice.mobjam.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
