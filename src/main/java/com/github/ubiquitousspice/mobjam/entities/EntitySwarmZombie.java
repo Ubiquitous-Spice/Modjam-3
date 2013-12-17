@@ -20,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -182,6 +183,33 @@ public class EntitySwarmZombie extends EntityMob
 		this.getDataWatcher().addObject(12, Byte.valueOf((byte) 0));
 		this.getDataWatcher().addObject(13, Byte.valueOf((byte) 0));
 		this.getDataWatcher().addObject(14, Byte.valueOf((byte) 0));
+	}
+
+	@Override
+	public void onDeath(DamageSource source)
+	{
+		super.onDeath(source);
+		//if (Util.isOurGameMode())
+		if (!worldObj.isRemote)
+		{
+			int random = (int) (Math.random() * 5);
+			for (int i = 0; i < random + 3; i++)
+			{
+				spewFlesh();
+			}
+		}
+	}
+
+	public void spewFlesh()
+	{
+		int par2 = 6;
+		Entity entity = new EntityFlyingFlesh(worldObj);
+		entity.setLocationAndAngles(posX, posY, posZ, 0, 0);
+		entity.motionY = worldObj.rand.nextDouble() * 0.1D + .7D;
+		entity.motionX += worldObj.rand.nextGaussian() * 0.007499999832361937D * (double) par2;
+		entity.motionY += worldObj.rand.nextGaussian() * 0.007499999832361937D * (double) par2;
+		entity.motionZ += worldObj.rand.nextGaussian() * 0.007499999832361937D * (double) par2;
+		worldObj.spawnEntityInWorld(entity);
 	}
 
 	/**

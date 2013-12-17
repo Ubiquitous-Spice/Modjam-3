@@ -122,7 +122,7 @@ public class MobJam
 		}
 		EntityList.addMapping(EntitySwarmZombie.class, "Zombie", 54, 44975, 7969893);
 
-		EntityRegistry.registerModEntity(EntityFlyingFlesh.class, "FlyingFlesh", 0, this, 20, 100, false);
+		EntityRegistry.registerModEntity(EntityFlyingFlesh.class, "FlyingFlesh", 0, this, 20, 1, false);
 	}
 
 }

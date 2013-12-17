@@ -39,9 +39,8 @@ public class EntityFlyingFleshRender extends Render
 
 		float f8;
 
-		GL11.glScalef(0.5F, 0.5F, 0.5F);
 
-		Icon icon1 = item.getIconIndex(null);
+		Icon icon1 = item.getIconFromDamage(0);
 
 		int l = item.getColorFromItemStack(null, 0);
 		f8 = (float) (l >> 16 & 255) / 255.0F;

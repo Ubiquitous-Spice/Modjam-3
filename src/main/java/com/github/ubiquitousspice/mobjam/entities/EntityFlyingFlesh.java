@@ -31,6 +31,7 @@ public class EntityFlyingFlesh extends Entity
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
+		this.motionY -= 0.03999999910593033D;
 
 		this.moveEntity(this.motionX, this.motionY, this.motionZ);
 
@@ -45,17 +46,7 @@ public class EntityFlyingFlesh extends Entity
 
 			if (!worldObj.isRemote)
 			{
-				int i = worldObj.getBlockId(x, y, z);
-
-				if (i == MobJam.corpses.blockID)
-				{
-					int meta = worldObj.getBlockMetadata(x, y, z);
-					worldObj.setBlockMetadataWithNotify(x, y, z, meta + 1, 3);
-				}
-				else
-				{
-					worldObj.setBlock(x, y, z, MobJam.corpses.blockID);
-				}
+				tryPlaceFlesh(x, y, z);
 			}
 		}
 
@@ -66,6 +57,36 @@ public class EntityFlyingFlesh extends Entity
 		if (this.onGround)
 		{
 			this.motionY *= -0.5D;
+		}
+	}
+
+	private void tryPlaceFlesh(int x, int y, int z)
+	{
+		int i = worldObj.getBlockId(x, y, z);
+
+//		if (i == 0)
+//		{
+//			tryPlaceFlesh(x, y-1, z);
+//		}
+		if (i == MobJam.corpses.blockID)
+		{
+			int meta = worldObj.getBlockMetadata(x, y, z);
+			if (meta >= MobJam.corpses.MAX_META)
+			{
+				worldObj.setBlock(x, y + 1, z, MobJam.corpses.blockID);
+			}
+			else
+			{
+				worldObj.setBlockMetadataWithNotify(x, y, z, meta + 1, 3);
+			}
+			this.setDead();
+			return;
+		}
+		else
+		{
+			worldObj.setBlock(x, y, z, MobJam.corpses.blockID);
+			this.setDead();
+			return;
 		}
 	}
 
