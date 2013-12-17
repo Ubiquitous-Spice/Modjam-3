@@ -83,6 +83,7 @@ public class MobJam
 		proxy.registerRenderer();
 
 		MinecraftForge.EVENT_BUS.register(new EventHandler());
+		MinecraftForge.EVENT_BUS.register(proxy);
 
 		List<Map<?, ?>> maplist = new LinkedList();
 		for (Field field : EntityList.class.getDeclaredFields())

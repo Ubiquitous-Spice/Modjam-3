@@ -2,19 +2,13 @@ package com.github.ubiquitousspice.mobjam;
 
 import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
-import org.lwjgl.opengl.GL11;
 
 public class EventHandler
 {
@@ -27,7 +21,7 @@ public class EventHandler
 			World world = event.entity.worldObj;
 			if (world != null)
 			{
-				if (Util.isOurGameMode(event.entity.worldObj))
+				if (Util.isOurGameMode())
 				{
 					if (!event.entity.getEntityData().getBoolean("hasSpawned"))
 					{
@@ -48,23 +42,6 @@ public class EventHandler
 					event.entity.getEntityData().setBoolean("hasSpawned", true);
 				}
 			}
-		}
-	}
-
-	RenderItem renderItem = new RenderItem();
-	ItemStack compassStack = new ItemStack(Item.compass);
-
-	@ForgeSubscribe
-	public void renderOverlay(RenderGameOverlayEvent event)
-	{
-		if (event.type == RenderGameOverlayEvent.ElementType.HOTBAR)
-		{
-			GL11.glPushMatrix();
-			GL11.glTranslatef(0.0F, 0.0F, 32.0F);
-			renderItem.zLevel = 200.0F;
-			renderItem.renderItemIntoGUI(null, Minecraft.getMinecraft().getTextureManager(), compassStack, 0, 0);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glPopMatrix();
 		}
 	}
 
