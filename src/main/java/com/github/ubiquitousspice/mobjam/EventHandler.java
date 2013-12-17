@@ -1,8 +1,10 @@
 package com.github.ubiquitousspice.mobjam;
 
+import com.github.ubiquitousspice.mobjam.entities.EntitySwarmZombie;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChunkCoordinates;
@@ -10,11 +12,37 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import org.lwjgl.opengl.GL11;
 
 public class EventHandler
 {
+
+	@ForgeSubscribe
+	public void spawnClones(EntityJoinWorldEvent event)
+	{
+		if (event.entity instanceof EntitySwarmZombie)
+		{
+			World world = event.entity.worldObj;
+			if (world != null && !event.entity.getEntityData().getBoolean("hasSpawned"))//TODO: finish fixing
+			{
+				int day = (int) world.getTotalWorldTime() / 24000;
+				int tospawn = (int) (20D / (1D + Math.pow(Math.E, (4D - day) / 2D))); //20/(1+e^((4-x)/2))
+
+				while (tospawn > 0)
+				{
+					System.out.println(tospawn);
+					Entity ent = new EntitySwarmZombie(world, false);
+					ent.setLocationAndAngles(event.entity.posX, event.entity.posY, event.entity.posZ, 0, 0);
+					ent.getEntityData().setBoolean("hasSpawned", true);
+					world.spawnEntityInWorld(ent);
+					tospawn--;
+				}
+			}
+			event.entity.getEntityData().setBoolean("hasSpawned", true);
+		}
+	}
 
 	RenderItem renderItem = new RenderItem();
 	ItemStack compassStack = new ItemStack(Item.compass);
