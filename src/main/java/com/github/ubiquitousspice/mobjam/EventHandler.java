@@ -21,7 +21,7 @@ public class EventHandler
 			World world = event.entity.worldObj;
 			if (world != null)
 			{
-				if (Util.isOurGameMode())
+				if (Util.isOurGameMode(world))
 				{
 					if (!event.entity.getEntityData().getBoolean("hasSpawned"))
 					{

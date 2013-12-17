@@ -54,9 +54,10 @@ public class MobJam
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-
 		// get Logger
 		logger = event.getModLog();
+
+		proxy.hackGameMode();
 
 		{
 			zombieBeacon = new ZombieBeacon(501);
@@ -78,7 +79,6 @@ public class MobJam
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		proxy.hackGameMode();
 
 		proxy.registerRenderer();
 

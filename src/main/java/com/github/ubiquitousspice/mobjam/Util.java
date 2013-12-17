@@ -1,12 +1,10 @@
 package com.github.ubiquitousspice.mobjam;
 
 import com.github.ubiquitousspice.mobjam.network.PacketBase;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
 
 public class Util
@@ -46,18 +44,8 @@ public class Util
 		PacketDispatcher.sendPacketToAllAround(X, Y, Z, range, dimensionId, packet.getPacket250());
 	}
 
-	public static boolean isOurGameMode()
-	{
-		return FMLCommonHandler.instance().getSidedDelegate().getServer().getGameType() == MobJam.GAMEMODE;
-	}
-
 	public static boolean isOurGameMode(World world)
 	{
 		return world.getWorldInfo().getGameType() == MobJam.GAMEMODE;
-	}
-
-	public static boolean isOurGameMode(EntityPlayerMP player)
-	{
-		return player.theItemInWorldManager.getGameType() == MobJam.GAMEMODE;
 	}
 }
