@@ -62,13 +62,15 @@ public class EventHandler
 	public void genSpawn(PopulateChunkEvent.Post event)
 	{
 		ChunkCoordinates spawn = event.world.getSpawnPoint();
+		final World world = event.world;
+		if (Util.isOurGameMode(world)) {
 		if (spawn.posX / 16 == event.chunkX && spawn.posZ / 16 == event.chunkZ)
 		{
-			final World world = event.world;
 			final int cx = spawn.posX;
 			final int cz = spawn.posZ;
 			final int highest = getHighestBlock(world, cx, cz);
 			genFort(world, cx, highest, cz);
+		}
 		}
 	}
 
