@@ -45,7 +45,9 @@ public class EntityAISwarmSpawn extends EntityAIBase
 		}
 		catch (Exception e)
 		{
+			if (Util.isOurGameMode(this.entityLiving.worldObj)) {
 			e.printStackTrace();
+			}
 		}
 	}
 
